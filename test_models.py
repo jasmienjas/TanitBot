@@ -190,6 +190,18 @@ def run_prompt_evaluation(model, tokenizer, prompt_text, args):
         formatted_prompt = f"<|im_start|>user\n{prompt_text}<|im_end|>\n<|im_start|>assistant\n"
         input_ids = tokenizer.encode(formatted_prompt, return_tensors="pt")
         
+    # Ensure input_ids is a 2D PyTorch tensor
+    if isinstance(input_ids, list):
+        if len(input_ids) > 0 and isinstance(input_ids[0], list):
+            input_ids = torch.tensor(input_ids)
+        else:
+            input_ids = torch.tensor([input_ids])
+    elif not isinstance(input_ids, torch.Tensor):
+        input_ids = torch.tensor(input_ids)
+        
+    if input_ids.ndim == 1:
+        input_ids = input_ids.unsqueeze(0)
+
     # Relocate input tensors to model's active device
     device = "cuda" if torch.cuda.is_available() else "cpu"
     if hasattr(model, "device"):
@@ -379,6 +391,7 @@ def main():
                     
                 except Exception as eval_err:
                     print(f"    [!] Generation failed for prompt '{prompt_obj['id']}': {repr(eval_err)}")
+                    traceback.print_exc()
                     model_run_data["evaluations"].append({
                         "prompt_id": prompt_obj["id"],
                         "category": prompt_obj["category"],
