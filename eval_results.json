@@ -1,0 +1,222 @@
+{
+  "metadata": {
+    "timestamp": "2026-06-16 18:03:02",
+    "quantization": "4-bit",
+    "temperature": 0.3,
+    "max_new_tokens": 256
+  },
+  "runs": [
+    {
+      "model_id": "Qwen/Qwen2-1.5B-Instruct",
+      "success": true,
+      "evaluations": [
+        {
+          "prompt_id": "conversational_intro",
+          "category": "Conversational",
+          "description": "Greeting and basic chat in Tunisian Arabic",
+          "prompt": "أحكيلي بالتونسي شنوة تنجم تعمل كـ مساعد ذكي وكيفاش تنجم تعاوني؟",
+          "response": "تنجم هو نموذج ذكاء صناعي مصمم لمساعدة المستخدمين في القيام بأعمال معينة مثل البحث عن المعلومات، الإعدادات، أو التوصيات. هذا النموذج يمكن أن يساعد المستخدمين على توفير الوقت والجهد، وتحسين كفاءة العمل.\n\nعلى الجانب الآخر، \"تاكو\" هو اسم من الأسماء التي قد تستخدم في العديد من الثقافات، بما في ذلك التونسية. \"تاكو\" تعني \"البضعة\" أو \"العسل\"، وهو ما يعني أن هذه الاسم قد يكون مرتبطًا بالغرض الذي يهدف إليه.",
+          "latency_seconds": 6.42,
+          "tokens_generated": 142,
+          "tokens_per_second": 22.13,
+          "success": true
+        },
+        {
+          "prompt_id": "conversational_story",
+          "category": "Conversational",
+          "description": "Short story generation in Tunisian Arabic",
+          "prompt": "أحكيلي حكاية قصيرة بالتونسي على راجل مشا للمارشي يلوج على الحوت.",
+          "response": "عذراً، ولكنني لست قادرًا على كتابة كتب أو قصص باللغة التونسية. أنا مساعد ذكاء صناعي ومتخصص في الكتابة بالإنجليزية والفرنسية فقط. هل يمكنني مساعدتك بغيرها من الأمور؟",
+          "latency_seconds": 2.78,
+          "tokens_generated": 68,
+          "tokens_per_second": 24.48,
+          "success": true
+        },
+        {
+          "prompt_id": "translation_en_to_tn",
+          "category": "Translation",
+          "description": "Translate English to Tunisian Arabic",
+          "prompt": "ترجم الجملة هذي للدارجة التونسية:\n'I am very tired today because I worked all night long, and now I just want to drink a cup of coffee and sleep.'",
+          "response": "\"أنا أشعر بالتعب الشديد اليوم لأنني عملت ليلة كاملة، الآن فقط أرغب في تناول كوب من القهوة والذهاب إلى النوم.\"",
+          "latency_seconds": 1.76,
+          "tokens_generated": 41,
+          "tokens_per_second": 23.33,
+          "success": true
+        },
+        {
+          "prompt_id": "translation_msa_to_tn",
+          "category": "Translation",
+          "description": "Translate Modern Standard Arabic (MSA) to Tunisian Arabic",
+          "prompt": "ترجم الجملة هذي من الفصحى للدارجة التونسية:\n'أين تقع محطة القطار وكيف يمكنني الذهاب إلى هناك؟ وهل التذاكر متوفرة الآن؟'",
+          "response": "\"أين تقع محطة القطار وكيف يمكنني الذهاب إلى هناك؟ وهل التذاكر متوفرة الآن؟\"",
+          "latency_seconds": 1.33,
+          "tokens_generated": 31,
+          "tokens_per_second": 23.25,
+          "success": true
+        },
+        {
+          "prompt_id": "cultural_idiom",
+          "category": "Culture & Idioms",
+          "description": "Explaining a Tunisian idiom",
+          "prompt": "فسرلي بالباهي المثل التونسي هذا شنوة معناه ووين نستعملوه: 'كان صبت اندبي وكان خلت اندبي'.",
+          "response": "المثل التونسي الذي تقدمه لك \"كان صبت اندبي وكان خلت اندبي\" يترجم إلى الإنجليزية كالتالي: \"He was rich and he had no children.\" \n\nالمعنى العام لهذا المثل هو أن الشخص الذي يكون لديه المال، ولكنه لا يملك أطفالاً، يُعتبر مرتيبًا من حيث القيمة والمال.\n\nفيما يتعلق باستخدامه، يمكن استخدامه في العديد من الأحوال الاجتماعية والثقافية في تونس. على سبيل المثال، يمكن استخدامه لوصف شخص يمتلك الكثير من المال ولكن ليس لديها أي أطفال. كما يمكن استخدامه للتعبير عن فضول أو غضب إذا كان الشخص يعتقد أنه لم يكن لديه أطفال حتى الآن.",
+          "latency_seconds": 7.36,
+          "tokens_generated": 165,
+          "tokens_per_second": 22.41,
+          "success": true
+        },
+        {
+          "prompt_id": "cultural_geography",
+          "category": "Culture & Geography",
+          "description": "Tunisian regional and tourist advice",
+          "prompt": "شنوة أحسن بلاصة تنصحني نزورها في تونس في الصيف؟ وعلاش هي بالذات؟",
+          "response": "بالتأكيد، أنا هنا لمساعدتك! هناك العديد من الأماكن الجميلة في تونس التي يمكن زيارتها خلال الصيف. إليك بعض النصائح:\n\n1. متحف الكنوز: يقع في مدينة تونس ويضم مجموعة كبيرة من الأشياء الفريدة والخفيه.\n\n2. باراك سينت جيفرن: هذا المكان يحتوي على العديد من الأماكن الجميلة للنزول والمشي، بالإضافة إلى العديد من المتاجر والمطاعم.\n\n3. قصر كابيتال: وهو واحد من أكثر الأماكن مشاهقة في تونس، حيث يحتوي على العديد من الأماكن الجميلة للنزول والمشي.\n\n4. متحف السفارة الأمريكية: يقع في قلب تونس ويحتوي على العديد من الأماكن الجميلة للنزول والمشي.\n\n5. متحف الأموال: يقع في قرية تيمبو، وهي واحدة من أكثر الأماكن مشاهقة في تونس.\n\n6. متحف القديمة: يقع في مدينة تونس ويحتوي على العديد من الأما",
+          "latency_seconds": 10.9,
+          "tokens_generated": 256,
+          "tokens_per_second": 23.5,
+          "success": true
+        },
+        {
+          "prompt_id": "sentiment_negative",
+          "category": "Sentiment Analysis",
+          "description": "Classifying negative Tunisian Arabic statement",
+          "prompt": "شنوة الإحساس (إيجابي، سلبي، محايد) متع الجملة هذي بالتونسي: 'الخدمة هذي فدّدتني وكرهت حياتي بسببها والكرهبة ديما معطلة'؟ جاوب في كلمة وحدة وبدون تفاصيل.",
+          "response": "سلبية",
+          "latency_seconds": 0.14,
+          "tokens_generated": 3,
+          "tokens_per_second": 21.35,
+          "success": true
+        },
+        {
+          "prompt_id": "sentiment_positive",
+          "category": "Sentiment Analysis",
+          "description": "Classifying positive Tunisian Arabic statement",
+          "prompt": "شنوة الإحساس (إيجابي، سلبي، محايد) متع الجملة هذي بالتونسي: 'ملا جو وملا كادو مزيان، يعطيك الصحة وفرحتني برشا!'؟ جاوب في كلمة وحدة وبدون تفاصيل.",
+          "response": "الإحساس بالجملة هي \"إيجابي\".",
+          "latency_seconds": 0.6,
+          "tokens_generated": 14,
+          "tokens_per_second": 23.41,
+          "success": true
+        },
+        {
+          "prompt_id": "code_switching",
+          "category": "Code-Switching",
+          "description": "Tunisian Arabic mixed with French words",
+          "prompt": "جاوبني بالتونسي مع استعمال شوية كلمات بالفرنسية (كيفما يحكيو برشا توانسة في الشارع): كيفاش نجم نعمل رز بالفاكهة؟",
+          "response": "بالطبع، نعم! الرز بالفواكه هو خيار رائع للاستمتاع بالطعام في فرحة الصباح. يمكنك أن تضيف بعض الفاكهة المفضلة لديك مثل البرتقال أو الجزر أو الطماطم أو الخضروات الأخرى لتزيين الرز وجعله أكثر طعمًا ونكهة. إذا كنت مهتمًا بطبخ الرز بالفواكه، فأنا أوصي بك أن تبدأ من قليل من الفواكه المفضلة لديك ثم تزيد كمية الفواكه حسب الحاجة. هذا سيساعد على إضافة المزيد من النكهة والطعم إلى الرز.",
+          "latency_seconds": 6.04,
+          "tokens_generated": 145,
+          "tokens_per_second": 24.0,
+          "success": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "model_id": "Qwen/Qwen2-7B-Instruct",
+      "success": true,
+      "evaluations": [
+        {
+          "prompt_id": "conversational_intro",
+          "category": "Conversational",
+          "description": "Greeting and basic chat in Tunisian Arabic",
+          "prompt": "أحكيلي بالتونسي شنوة تنجم تعمل كـ مساعد ذكي وكيفاش تنجم تعاوني؟",
+          "response": "أنا مساعد ذكي مبرمج للمساعدة في تقديم المعلومات والرد على الأسئلة. يمكنني التعاون معك من خلال القيام بالعديد من المهام، بما في ذلك:\n\n1. تقديم المعلومات: يمكنني البحث في الإنترنت وتقديم المعلومات التي تبحث عنها. سواء كان الأمر يتعلق بالأخبار، أو الطقس، أو الترجمة، أو المعلومات حول المنتجات والخدمات.\n\n2. تنظيم المهام: يمكنني تذكر المواعيد، وإعداد التذكيرات، وتنظيم المهام اليومية.\n\n3. الإجابة على الأسئلة: إذا كانت لديك سؤال ما، فأنا هنا لمساعدتك. سواء كان السؤال يتعلق بالعلوم، أو الرياضيات، أو التاريخ، أو أي موضوع آخر.\n\n4. توجيهك: يمكنني توجيهك إلى المواقع التي تبحث عنها، أو توجيهك إلى الأدوات التي تحتاجها.\n\n5. التعلم والتحسين: كلما استخدمتني أكثر، ستعمل أفضل. أتعلم من每一次 تفاعل ومستوى الاستخدام يساعدني في تحسين أدائي.\n\nلتعاون معي، فقط قل \"مرحبا، مساعد\" أو",
+          "latency_seconds": 11.49,
+          "tokens_generated": 256,
+          "tokens_per_second": 22.28,
+          "success": true
+        },
+        {
+          "prompt_id": "conversational_story",
+          "category": "Conversational",
+          "description": "Short story generation in Tunisian Arabic",
+          "prompt": "أحكيلي حكاية قصيرة بالتونسي على راجل مشا للمارشي يلوج على الحوت.",
+          "response": "في بلدة تقع على ساحل البحر المتوسط في تونس، كان هناك رجل يدعى حمزة. كان حمزة مشا لوج، وهو من أهل البحر. كان يقضي كل يومه في البحر، يتجول ويبحث عن الحوت الذي يحلم بجده.\n\nكان يعيش حمزة في وسط مجتمع يعشق البحر ويستمد منه الحياة. ولكن، كان لديه حلم آخر. حلمه هو أن يجد الحوت الأزرق الكبيرة. كانت هذه الحوتة كبيرة جداً، حتى أن الناس في البلدة لم يرها من قبل.\n\nفي يوم من الأيام، قرر حمزة أن يبدأ في البحث عن الحوت. كان يسير على مساره في البحر، يلمس الرياح والبحر، يشعر بالهدوء والسلام. بعد أيام طويلة من البحث، بدأ يفقد الأمل. \n\nوفي يوم من الأيام، بينما كان يتجول في البحر، شعر بشيء غريب. كان هناك شيء يتحرك تحت السطح. فقرر أن يتجه نحو هذا الشيء. وصل إلى النقطة التي يعتقد أنها تحيط بالشيء، وبدأ ي",
+          "latency_seconds": 11.45,
+          "tokens_generated": 256,
+          "tokens_per_second": 22.37,
+          "success": true
+        },
+        {
+          "prompt_id": "translation_en_to_tn",
+          "category": "Translation",
+          "description": "Translate English to Tunisian Arabic",
+          "prompt": "ترجم الجملة هذي للدارجة التونسية:\n'I am very tired today because I worked all night long, and now I just want to drink a cup of coffee and sleep.'",
+          "response": "'njejna 3arabli waa, 3an iška 3alalat lafni, wa7da 3an iška 3afta 3ammara waa 3ayna 3amara 3an 3ayna 3an 3a3la 3a3la.",
+          "latency_seconds": 3.47,
+          "tokens_generated": 78,
+          "tokens_per_second": 22.5,
+          "success": true
+        },
+        {
+          "prompt_id": "translation_msa_to_tn",
+          "category": "Translation",
+          "description": "Translate Modern Standard Arabic (MSA) to Tunisian Arabic",
+          "prompt": "ترجم الجملة هذي من الفصحى للدارجة التونسية:\n'أين تقع محطة القطار وكيف يمكنني الذهاب إلى هناك؟ وهل التذاكر متوفرة الآن؟'",
+          "response": "\"كداش السكة الحديد في جاي و كيف أقدر أروح بسحابه؟ و هل الدخول متوفرة داود؟\"",
+          "latency_seconds": 1.58,
+          "tokens_generated": 36,
+          "tokens_per_second": 22.78,
+          "success": true
+        },
+        {
+          "prompt_id": "cultural_idiom",
+          "category": "Culture & Idioms",
+          "description": "Explaining a Tunisian idiom",
+          "prompt": "فسرلي بالباهي المثل التونسي هذا شنوة معناه ووين نستعملوه: 'كان صبت اندبي وكان خلت اندبي'.",
+          "response": "المثل التونسي \"كان صبت اندبي وكان خلت اندبي\" يعبر عن حالة تأويلية أو تغيير في الظروف أو الوضع. \n\nمعناه البسيط هو: \"كان شيء في البداية ولكن أصبح غير ذلك في النهاية\". \n\nهذا المثل يستخدم عادة عندما يتحدث الشخص عن تغير في الوضع أو الظروف، أو عندما يشرح كيف تغير شيء ما من الأصل إلى الشكل الحالي. \n\nعلى سبيل المثال، إذا كان شخصاً يتحدث عن مساحة منزله التي كانت مزدحمة في البداية ولكن أصبحت فارغة بعد بيع بعض الأثاث، يمكن أن يقول \"كان صبت اندبي وكان خلت اندبي\".",
+          "latency_seconds": 7.47,
+          "tokens_generated": 166,
+          "tokens_per_second": 22.23,
+          "success": true
+        },
+        {
+          "prompt_id": "cultural_geography",
+          "category": "Culture & Geography",
+          "description": "Tunisian regional and tourist advice",
+          "prompt": "شنوة أحسن بلاصة تنصحني نزورها في تونس في الصيف؟ وعلاش هي بالذات؟",
+          "response": "تونس هي دولة مثيرة للإعجاب مع العديد من الأماكن التي تستحق زيارتها، خاصة في الصيف. إليك بعض الاقتراحات:\n\n1. جزيرة دjerba: تقع في الجزء الشمالي الشرقي من تونس. تتميز بمناظرها الطبيعية الخلابة والمناخ المعتدل في الصيف. توجد هناك العديد من الرشيد والفنادق التي تقدم تجربة راحة وراحة.\n\n2. مدينة سوسة: تقع في الجزء الشرقي من تونس. تشتهر بمناظرها الساحلية الجميلة والهندسة المعمارية القديمة. \n\n3. مدينة صفاقس: تقع في الجزء الغربي من تونس. تشتهر بمناظرها البحرية الخلابة ورونقها الثقافي.\n\n4. مدينة تونس: العاصمة تونس. تضم العديد من المعالم التاريخية مثل قصر الباجي، والقصر الرومانى، والمعبد الروماني.\n\n5. مدينة بوجاية: تقع في الجزء الشمالي الغربي من تونس. تشتهر",
+          "latency_seconds": 10.92,
+          "tokens_generated": 256,
+          "tokens_per_second": 23.44,
+          "success": true
+        },
+        {
+          "prompt_id": "sentiment_negative",
+          "category": "Sentiment Analysis",
+          "description": "Classifying negative Tunisian Arabic statement",
+          "prompt": "شنوة الإحساس (إيجابي، سلبي، محايد) متع الجملة هذي بالتونسي: 'الخدمة هذي فدّدتني وكرهت حياتي بسببها والكرهبة ديما معطلة'؟ جاوب في كلمة وحدة وبدون تفاصيل.",
+          "response": "سلبي",
+          "latency_seconds": 0.14,
+          "tokens_generated": 3,
+          "tokens_per_second": 21.84,
+          "success": true
+        },
+        {
+          "prompt_id": "sentiment_positive",
+          "category": "Sentiment Analysis",
+          "description": "Classifying positive Tunisian Arabic statement",
+          "prompt": "شنوة الإحساس (إيجابي، سلبي، محايد) متع الجملة هذي بالتونسي: 'ملا جو وملا كادو مزيان، يعطيك الصحة وفرحتني برشا!'؟ جاوب في كلمة وحدة وبدون تفاصيل.",
+          "response": "إيجابي",
+          "latency_seconds": 0.22,
+          "tokens_generated": 5,
+          "tokens_per_second": 23.08,
+          "success": true
+        },
+        {
+          "prompt_id": "code_switching",
+          "category": "Code-Switching",
+          "description": "Tunisian Arabic mixed with French words",
+          "prompt": "جاوبني بالتونسي مع استعمال شوية كلمات بالفرنسية (كيفما يحكيو برشا توانسة في الشارع): كيفاش نجم نعمل رز بالفاكهة؟",
+          "response": "في تونس، نعمل الريز من الفاكهة بطرق مختلفة. أولا، نحتاج إلى اختيار الفاكهة التي تفضله. يمكن أن تكون الليمون، البرتقال، التفاح، أو حتى الفواكه المجروفة. ثم نقطعها ونخلطها مع السكر والليمون. بعد ذلك، نتركها ترتاح لبضع ساعات حتى تبتلع الفواكه. في النهاية، نضيف بعض الزبدة أو الزيت للحصول على طعم أكثر كثافة. هذا هو الأساس، لكن يمكنك إضافة مكونات أخرى حسب ذوقك.",
+          "latency_seconds": 5.65,
+          "tokens_generated": 139,
+          "tokens_per_second": 24.6,
+          "success": true
+        }
+      ],
+      "error": null
+    }
+  ]
+}
