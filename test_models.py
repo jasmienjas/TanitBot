@@ -3,7 +3,6 @@
 Tunisian Arabic LLM Benchmarking Script for RunPod
 Created to evaluate and compare different models on dialectal Tunisian Arabic (Derja).
 """
-
 import os
 import gc
 import sys
@@ -84,7 +83,7 @@ DEFAULT_PROMPTS = [
 ]
 
 
-def load_model_and_tokenizer(model_id, quantization=None, hf_token=None):
+def load_model_and_tokenizer(model_id, quantization=None, hf_token=None, cache_dir=None):
     """
     Loads tokenizer and model with appropriate configurations for CUDA/CPU and optional quantization.
     """
@@ -122,7 +121,8 @@ def load_model_and_tokenizer(model_id, quantization=None, hf_token=None):
     tokenizer = AutoTokenizer.from_pretrained(
         model_id,
         token=hf_token,
-        trust_remote_code=True
+        trust_remote_code=True,
+        cache_dir=cache_dir
     )
     
     if tokenizer.pad_token is None:
@@ -135,7 +135,8 @@ def load_model_and_tokenizer(model_id, quantization=None, hf_token=None):
         torch_dtype=torch_dtype,
         device_map=device_map,
         token=hf_token,
-        trust_remote_code=True
+        trust_remote_code=True,
+        cache_dir=cache_dir
     )
     
     return model, tokenizer
@@ -270,6 +271,12 @@ def main():
         default=os.environ.get("HF_TOKEN"),
         help="Hugging Face authorization token. Defaults to HF_TOKEN environment variable."
     )
+    parser.add_argument(
+        "--cache-dir",
+        type=str,
+        default="./hf_cache",
+        help="Directory where Hugging Face downloads and caches models. Defaults to './hf_cache' (recommended for RunPod workspace storage)."
+    )
     args = parser.parse_args()
 
     # Determine models list
@@ -334,7 +341,7 @@ def main():
 
         try:
             # Load
-            model, tokenizer = load_model_and_tokenizer(model_id, args.quantize, args.hf_token)
+            model, tokenizer = load_model_and_tokenizer(model_id, args.quantize, args.hf_token, args.cache_dir)
             model_run_data["success"] = True
             
             # Execute prompts
