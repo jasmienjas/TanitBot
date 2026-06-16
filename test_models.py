@@ -36,61 +36,61 @@ except ImportError:
     print("[!] HuggingFace Transformers is not installed. Please run: pip install transformers accelerate")
     sys.exit(1)
 
-# Default Tunisian Arabic Prompts Suite
+# Default Tunisian Arabic Prompts Suite (Focused on Digital Safety & Cybersecurity)
 DEFAULT_PROMPTS = [
     {
-        "id": "conversational_intro",
-        "category": "Conversational",
-        "description": "Greeting and basic chat in Tunisian Arabic",
-        "prompt": "أحكيلي بالتونسي شنوة تنجم تعمل كـ مساعد ذكي وكيفاش تنجم تعاوني؟"
+        "id": "safety_password",
+        "category": "Digital Safety",
+        "description": "Creating strong passwords and using password managers",
+        "prompt": "كيفاش نجم نحمي حساباتي على الأنترنات؟ فسرلي بالدارجة التونسية كيفاش نصنع كلمة سر قوية وعلاش باهي نستعمل تطبيق لإدارة كلمات السر."
     },
     {
-        "id": "conversational_story",
-        "category": "Conversational",
-        "description": "Short story generation in Tunisian Arabic",
-        "prompt": "أحكيلي حكاية قصيرة بالتونسي على راجل مشا للمارشي يلوج على الحوت."
+        "id": "safety_phishing",
+        "category": "Digital Safety",
+        "description": "Recognizing phishing emails and links",
+        "prompt": "وصلني إيميل يقول اللي حسابي البنكي باش يتسكر ولازم ننزل على رابط ونكتب معطياتي. كيفاش نعرف الإيميل هذا كينو صحيح وإلا محاولة تحيل وسرقة بيانات؟ جاوبني بالدارجة التونسية وأنصحني شنوة نعمل."
     },
     {
-        "id": "translation_en_to_tn",
-        "category": "Translation",
-        "description": "Translate English to Tunisian Arabic",
-        "prompt": "ترجم الجملة هذي للدارجة التونسية:\n'I am very tired today because I worked all night long, and now I just want to drink a cup of coffee and sleep.'"
+        "id": "safety_2fa",
+        "category": "Digital Safety",
+        "description": "Explaining 2FA and its importance",
+        "prompt": "برشا تطبيقات تطلب مني نفعل خاصية التحقق بخطوتين. شنوة معناها هذي بالظبط وعلاش مهمة برشا لحماية حساباتي؟ فسرهالي بالدارجة التونسية بطريقة مبسطة."
     },
     {
-        "id": "translation_msa_to_tn",
-        "category": "Translation",
-        "description": "Translate Modern Standard Arabic (MSA) to Tunisian Arabic",
-        "prompt": "ترجم الجملة هذي من الفصحى للدارجة التونسية:\n'أين تقع محطة القطار وكيف يمكنني الذهاب إلى هناك؟ وهل التذاكر متوفرة الآن؟'"
+        "id": "safety_public_wifi",
+        "category": "Digital Safety",
+        "description": "Risks of using public Wi-Fi networks",
+        "prompt": "هل فما خطر كيف نكنكتي من ويفي بيبليك وعمومي في قهوة وإلا مطار؟ وشنوة ننجم نعمل باش نحمي روحي وتلفوني؟ جاوبني بالدارجة التونسية."
     },
     {
-        "id": "cultural_idiom",
-        "category": "Culture & Idioms",
-        "description": "Explaining a Tunisian idiom",
-        "prompt": "فسرلي بالباهي المثل التونسي هذا شنوة معناه ووين نستعملوه: 'كان صبت اندبي وكان خلت اندبي'."
+        "id": "safety_harassment",
+        "category": "Digital Safety",
+        "description": "Dealing with cyberbullying and harassment",
+        "prompt": "صاحبي يتعرض لمضايقات وتنمر على فيسبوك وإنستغرام وحالته النفسية تعبت. أنصحو بالدارجة التونسية شنوة الإجراءات العملية والقانونية اللي ينجم يعملها في تونس."
     },
     {
-        "id": "cultural_geography",
-        "category": "Culture & Geography",
-        "description": "Tunisian regional and tourist advice",
-        "prompt": "شنوة أحسن بلاصة تنصحني نزورها في تونس في الصيف؟ وعلاش هي بالذات؟"
+        "id": "safety_scams",
+        "category": "Digital Safety",
+        "description": "Recognizing social media money scams",
+        "prompt": "فما شكون بعثلي مساج على مسنجر وقالي اللي أنا ربحت كادو كبير ولازم نبعثلو كود شحن تلفون باش يبعثلي الكادو. فسرلي بالدارجة التونسية علاش هذي عملية تحيل وكيفاش نتعامل مع النوع هذا من العباد."
     },
     {
-        "id": "sentiment_negative",
-        "category": "Sentiment Analysis",
-        "description": "Classifying negative Tunisian Arabic statement",
-        "prompt": "شنوة الإحساس (إيجابي، سلبي، محايد) متع الجملة هذي بالتونسي: 'الخدمة هذي فدّدتني وكرهت حياتي بسببها والكرهبة ديما معطلة'؟ جاوب في كلمة وحدة وبدون تفاصيل."
+        "id": "safety_privacy_settings",
+        "category": "Digital Safety",
+        "description": "Configuring privacy on Facebook/Instagram",
+        "prompt": "نحب نحمي خصوصيتي على مواقع التواصل الاجتماعي وما نحبش أي حد يشوف تصاوري ومعلوماتي الشخصية. شنوة أهم إعدادات الخصوصية اللي لازم نثبت فيها؟ انصحني بالدارجة التونسية."
     },
     {
-        "id": "sentiment_positive",
-        "category": "Sentiment Analysis",
-        "description": "Classifying positive Tunisian Arabic statement",
-        "prompt": "شنوة الإحساس (إيجابي، سلبي، محايد) متع الجملة هذي بالتونسي: 'ملا جو وملا كادو مزيان، يعطيك الصحة وفرحتني برشا!'؟ جاوب في كلمة وحدة وبدون تفاصيل."
+        "id": "safety_malware",
+        "category": "Digital Safety",
+        "description": "Protecting devices from malware/viruses",
+        "prompt": "كيفاش نجم نحمي الحاسوب وتلفوني من الفيروسات والبرمجيات الخبيثة؟ اعطيني نصائح عملية بالدارجة التونسية."
     },
     {
-        "id": "code_switching",
-        "category": "Code-Switching",
-        "description": "Tunisian Arabic mixed with French words",
-        "prompt": "جاوبني بالتونسي مع استعمال شوية كلمات بالفرنسية (كيفما يحكيو برشا توانسة في الشارع): كيفاش نجم نعمل رز بالفاكهة؟"
+        "id": "safety_backup",
+        "category": "Digital Safety",
+        "description": "Importance of data backups",
+        "prompt": "علاش مهم برشا نعمل نسخة احتياطية لـ تصاوري وخدمتي ديما؟ وكيفاش ننجم نعملها بطريقة آمنة؟ جاوبني بالدارجة التونسية."
     }
 ]
 
