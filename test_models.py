@@ -190,15 +190,41 @@ def run_prompt_evaluation(model, tokenizer, prompt_text, args):
         formatted_prompt = f"<|im_start|>user\n{prompt_text}<|im_end|>\n<|im_start|>assistant\n"
         input_ids = tokenizer.encode(formatted_prompt, return_tensors="pt")
         
-    # Ensure input_ids is a 2D PyTorch tensor
-    if isinstance(input_ids, list):
-        if len(input_ids) > 0 and isinstance(input_ids[0], list):
+    # Ensure input_ids is converted to a 2D PyTorch tensor of token IDs
+    # 1. Handle dictionary or BatchEncoding structures
+    if isinstance(input_ids, dict) or hasattr(input_ids, "keys"):
+        if "input_ids" in input_ids:
+            input_ids = input_ids["input_ids"]
+
+    # 2. Handle single tokenizers.Encoding object
+    if hasattr(input_ids, "ids"):
+        input_ids = input_ids.ids
+
+    # 3. Handle list or tuple structures (which might contain Encoding objects)
+    if isinstance(input_ids, (list, tuple)):
+        resolved = []
+        for item in input_ids:
+            if hasattr(item, "ids"):
+                resolved.append(item.ids)
+            elif isinstance(item, (list, tuple)):
+                resolved.append(list(item))
+            else:
+                try:
+                    resolved.append(int(item))
+                except:
+                    pass
+        input_ids = resolved
+
+    # 4. Convert to PyTorch Tensor
+    if not isinstance(input_ids, torch.Tensor):
+        if isinstance(input_ids, list) and len(input_ids) > 0 and isinstance(input_ids[0], list):
             input_ids = torch.tensor(input_ids)
         else:
             input_ids = torch.tensor([input_ids])
-    elif not isinstance(input_ids, torch.Tensor):
-        input_ids = torch.tensor(input_ids)
-        
+    else:
+        input_ids = input_ids.long()
+
+    # 5. Ensure 2D shape (batch_size, sequence_length)
     if input_ids.ndim == 1:
         input_ids = input_ids.unsqueeze(0)
 
