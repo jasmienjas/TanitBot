@@ -366,7 +366,7 @@ def main():
                     model_run_data["evaluations"].append(eval_entry)
                     
                 except Exception as eval_err:
-                    print(f"    [!] Generation failed for prompt '{prompt_obj['id']}': {eval_err}")
+                    print(f"    [!] Generation failed for prompt '{prompt_obj['id']}': {repr(eval_err)}")
                     model_run_data["evaluations"].append({
                         "prompt_id": prompt_obj["id"],
                         "category": prompt_obj["category"],
