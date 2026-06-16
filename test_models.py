@@ -117,7 +117,8 @@ def load_model_and_tokenizer(model_id, quantization=None, hf_token=None, cache_d
 
     # Determine automatic device mapping and data type for modern GPUs
     if torch.cuda.is_available():
-        device_map = "auto"
+        # Force loading on GPU 0 for quantized models to prevent bitsandbytes CPU-offloading errors
+        device_map = {"": 0} if bnb_config is not None else "auto"
         if bnb_config is not None:
             torch_dtype = None  # bitsandbytes manages precision internally
         else:
