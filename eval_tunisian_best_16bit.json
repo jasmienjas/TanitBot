@@ -1,0 +1,328 @@
+{
+  "metadata": {
+    "timestamp": "2026-06-16 19:43:30",
+    "quantization": "16-bit (half)",
+    "temperature": 0.3,
+    "max_new_tokens": 256
+  },
+  "runs": [
+    {
+      "model_id": "linagora/Labess-7b-chat-16bit",
+      "success": true,
+      "evaluations": [
+        {
+          "prompt_id": "safety_password",
+          "category": "Digital Safety",
+          "description": "Creating strong passwords and using password managers",
+          "prompt": "كيفاش نجم نحمي حساباتي على الأنترنات؟ فسرلي بالدارجة التونسية كيفاش نصنع كلمة سر قوية وعلاش باهي نستعمل تطبيق لإدارة كلمات السر.",
+          "response": "باش تحمي حسابك على الأنترنات اتبع هالخطوات السهلة أول حاجة سجل دخلو على الأنترنات بعد امشي لـ اضغط على صورة البروفايل متاعك باش تلقى صورة البروفايل متاعك في الصفحة الرئيسية متاع الأنترنات بعد امشي للصفحة الشخصية متاعك باش تلقى خيار اسمو تسجيل الدخول بعد امشي للصفحة الشخصية متاعك باش تلقى خيار اسمو تسجيل الدخول اضغط على زر تسجيل الدخول باش تدخل لحسابك بعد امشي للصفحة الشخصية متاعك باش تدخل لحسابك بعد ما تدخل لحسابك باش تلقى زر اسمو الأمان في الصفحة الرئيسية متاع الأنترنات باش تدخل زر الأمان في الصفحة الرئيسية متاع الأنترنات بعد ما تدخل زر الأمان باش تلقى مجموعة من الأزرار في الصفحة الرئيسية متاع الأنترنات باش تلقى مجموعة من الأزرار في الصفحة الرئيسية متاع الأنترنات بعد ما تلقى الأزرار امشي للزر اللي اسمو تسجيل الدخول باش تدخل لحسابك بعد ما تلقى الأزرار امشي للزر اللي اسمو تسجيل الدخول باش تدخل لحسابك بعد ما تدخل لحسابك باش تلقى زر اسمو الأمان في الصفحة الرئيسية متاع الأنترنات باش تدخل زر الأمان في الصفحة الرئيسية متاع الأنترنات بعد ما تلقى الزر",
+          "latency_seconds": 6.72,
+          "tokens_generated": 256,
+          "tokens_per_second": 38.09,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_phishing",
+          "category": "Digital Safety",
+          "description": "Recognizing phishing emails and links",
+          "prompt": "وصلني إيميل يقول اللي حسابي البنكي باش يتسكر ولازم ننزل على رابط ونكتب معطياتي. كيفاش نعرف الإيميل هذا كينو صحيح وإلا محاولة تحيل وسرقة بيانات؟ جاوبني بالدارجة التونسية وأنصحني شنوة نعمل.",
+          "response": "مرحبا صديقي أنا هنا باش نعاونك في مشكلتك مع الأسف الحساب متاعك تسكر ولازم تنزل على الرابط اللي عطيتني باش تكتب معطياتي باش تعرف اذا كان الإيميل هذا صحيح والا محاولة تحيل وسرقة بيانات لازمك تنزل على الرابط اللي عطيتني باش تكتب معطياتي بعد ما تنزل على الرابط باش تلقى إيميل جديد فيه عنوان فيه كود خاصك إذا كان الإيميل صحيح والا محاولة تحيل وسرقة بيانات لازمك تنزل على الرابط اللي عطيتني باش تكتب معطياتي باش تعرف اذا كان الإيميل هذا صحيح والا محاولة تحيل وسرقة بيانات لازمك تنزل على الرابط اللي عطيتني باش تكتب معطياتي باش تعرف اذا كان الإيميل هذا صحيح والا محاولة تحيل وسرقة بيانات لازمك تنزل على الرابط اللي عطيتني باش تكتب معطياتي باش تعرف اذا كان الإيميل هذا صحيح والا محاولة تحيل وسرقة بيانات لازمك تنزل على الرابط اللي عطيتني باش تكتب معطياتي باش تعرف اذا كان الإيميل هذا صحيح والا محاولة تحيل وسرقة بيانات لازمك تنزل على الرابط اللي عطيتني باش تكتب معطياتي باش تعرف اذا كان الإيميل هذا صحيح والا محاولة تحيل وسرقة بيانات لازمك تنزل على الرابط اللي عطيتني باش تكتب معطياتي باش تعرف اذا كان الإيميل هذا صحيح والا محاولة تحيل وسرقة بيانات لازمك تنزل على الرابط اللي عطي",
+          "latency_seconds": 6.38,
+          "tokens_generated": 256,
+          "tokens_per_second": 40.13,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_2fa",
+          "category": "Digital Safety",
+          "description": "Explaining 2FA and its importance",
+          "prompt": "برشا تطبيقات تطلب مني نفعل خاصية التحقق بخطوتين. شنوة معناها هذي بالظبط وعلاش مهمة برشا لحماية حساباتي؟ فسرهالي بالدارجة التونسية بطريقة مبسطة.",
+          "response": "برشا تطبيقات تطلب مني فعل خاصية التحقق بخطوتين شنوة معناها هذي بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا حماية حساباتي فسرهالي بالدارجة التونسية بطريقة مبسطة شنوة معنى هذا بالظبط وعلاش مهمة برشا",
+          "latency_seconds": 6.05,
+          "tokens_generated": 256,
+          "tokens_per_second": 42.3,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_public_wifi",
+          "category": "Digital Safety",
+          "description": "Risks of using public Wi-Fi networks",
+          "prompt": "هل فما خطر كيف نكنكتي من ويفي بيبليك وعمومي في قهوة وإلا مطار؟ وشنوة ننجم نعمل باش نحمي روحي وتلفوني؟ جاوبني بالدارجة التونسية.",
+          "response": "نعم فما خطر كيف نكنكتي من ويفي بيبليك وعمومي في قهوة وإلا مطار وشنوة ننجم نعمل باش نحمي روحي وتلفوني في هالسياق من المهم برشا باش نحمي روحنا ونتفكر في عوامل الخطر المختلفة اللي تنجم توصلنا لحوادثنا في حياتنا اليومية من بين هالعوامل نلقاو برشا عوامل خطيرة كيف العنف الضغط القلق الإكتئاب عدم الثقة وعدم الأمان كيف نحمي روحنا من هالعوامل نجم نتبعو برشا استراتيجيات اللي تعاونيهم باش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا ونتفكر في التالي كيفاش نحمي روحنا",
+          "latency_seconds": 6.21,
+          "tokens_generated": 256,
+          "tokens_per_second": 41.21,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_harassment",
+          "category": "Digital Safety",
+          "description": "Dealing with cyberbullying and harassment",
+          "prompt": "صاحبي يتعرض لمضايقات وتنمر على فيسبوك وإنستغرام وحالته النفسية تعبت. أنصحو بالدارجة التونسية شنوة الإجراءات العملية والقانونية اللي ينجم يعملها في تونس.",
+          "response": "صاحبي تعرض لميتامن على فيسبوك وإنستغرام حالته النفسية تعبت أنصحو بالدارجة التونسية شنوة الإجراءات العملية والقانونية اللي ينجم يعملها في تونس صاحبي تعرض لميتامن تعرض لميتامن صاحبي صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتامن صاحبي تعرض لميتمن صاحبي تعرض لميتمن صاحبي تعرض لميتمن صاحبي تعرض لميتمن صاحبي تعرض لميتمن صاحبي تعرض لميتمن صاحبي تعرض لميتمن صاحبي تعرض لميتمن صاحبي تعرض لميتمن",
+          "latency_seconds": 6.28,
+          "tokens_generated": 256,
+          "tokens_per_second": 40.77,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_scams",
+          "category": "Digital Safety",
+          "description": "Recognizing social media money scams",
+          "prompt": "فما شكون بعثلي مساج على مسنجر وقالي اللي أنا ربحت كادو كبير ولازم نبعثلو كود شحن تلفون باش يبعثلي الكادو. فسرلي بالدارجة التونسية علاش هذي عملية تحيل وكيفاش نتعامل مع النوع هذا من العباد.",
+          "response": "مرحبا صديقي أنا ما بعثتلكش كود شحن تلفون على مساجك خاطر ما عنديش الكادو هذاك لكن باش نعاونك في حاجة أخرى شنوة تحبني نعاونك فيها أنا هنا باش نعاونك في أي حاجة تحب قولي شنوة تحتاجي وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه وأنا باش نعاونك في أي حاجة تحبيني وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه أنا هنا باش نعاونك في أي حاجة تحبيني وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه أنا هنا باش نعاونك في أي حاجة تحبيني وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه أنا هنا باش نعاونك في أي حاجة تحبيني وأنا باش نعاونك في ذلك قولي شنوة تحبني نعاونك فيه وأنا باش نعاونك في ذلك قولي شنوة تحبني نعا",
+          "latency_seconds": 6.2,
+          "tokens_generated": 256,
+          "tokens_per_second": 41.28,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_privacy_settings",
+          "category": "Digital Safety",
+          "description": "Configuring privacy on Facebook/Instagram",
+          "prompt": "نحب نحمي خصوصيتي على مواقع التواصل الاجتماعي وما نحبش أي حد يشوف تصاوري ومعلوماتي الشخصية. شنوة أهم إعدادات الخصوصية اللي لازم نثبت فيها؟ انصحني بالدارجة التونسية.",
+          "response": "باش تحميي خصوصيتك على مواقع التواصل الاجتماعي وما تحبش أي حد يشوف تصاوري ومعلوماتي الشخصية شنوة أهم اعدالجة التونسية ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ ــ",
+          "latency_seconds": 6.01,
+          "tokens_generated": 256,
+          "tokens_per_second": 42.57,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_malware",
+          "category": "Digital Safety",
+          "description": "Protecting devices from malware/viruses",
+          "prompt": "كيفاش نجم نحمي الحاسوب وتلفوني من الفيروسات والبرمجيات الخبيثة؟ اعطيني نصائح عملية بالدارجة التونسية.",
+          "response": "باش تحميك الحاسوب وتلفوني من الفيروسات والبرجيت يلزمك تتبع شوية من النصائح هاذم باش تحميهم من العدوى أول حاجة عمل فورماتيزيشن على الحاسوب متاعك باش تلقى ملف الفيروسات والبرجيت اعمل فورماتيزيشن على الديسكتوب متاعك باش تلقى ملف الفيروسات والبرجيت بعد امشي للـ متاعك في الديسكتوب واضغط على زر امشي للـ في الديسكتوب واضغط على زر بعد امشي للـ متاعك في الديسكتوب واضغط على زر بعد امشي للـ متاعك في الديسكتوب واضغط على زر باش تحميك الحاسوب متاعك من الفيروسات والبرجيت يلزمك تلقى ملف الفيروسات والبرجيت في الديسكتوب بعد امشي للـ متاعك في الديسكتوب واضغط على زر باش تحميك الحاسوب متاعك من الفيروسات والبرجيت يلزمك تلقى ملف الفيروسات والبرجيت في الديسكتوب بعد امشي للـ متاعك في الديسكتوب واضغط على زر باش تحميك",
+          "latency_seconds": 6.11,
+          "tokens_generated": 256,
+          "tokens_per_second": 41.91,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_backup",
+          "category": "Digital Safety",
+          "description": "Importance of data backups",
+          "prompt": "علاش مهم برشا نعمل نسخة احتياطية لـ تصاوري وخدمتي ديما؟ وكيفاش ننجم نعملها بطريقة آمنة؟ جاوبني بالدارجة التونسية.",
+          "response": "علاش مهم برشا نعمل نسخة احتياطية لـ تصاوري وخدمتي ديما وكيفاش ننجم نعملها بطريقة آمنة جاوبني بالدارجة التونسية إنتظارا للإجابة على السؤال الأول إنتظارا للإجابة على السؤال الثاني إنتظارا للإجابة على السؤال الثالث إنتظارا للإجابة على السؤال الرابع إنتظارا للإجابة على السؤال الخامس إنتظارا للإجابة على السؤال السادس إنتظارا للإجابة على السؤال السابع إنتظارا للإجابة على السؤال الثامن إنتظارا للإجابة على السؤال التاسع إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر إنتظارا للإجابة على السؤال العاشر",
+          "latency_seconds": 6.27,
+          "tokens_generated": 256,
+          "tokens_per_second": 40.84,
+          "success": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "model_id": "Qwen/Qwen2-7B-Instruct",
+      "success": true,
+      "evaluations": [
+        {
+          "prompt_id": "safety_password",
+          "category": "Digital Safety",
+          "description": "Creating strong passwords and using password managers",
+          "prompt": "كيفاش نجم نحمي حساباتي على الأنترنات؟ فسرلي بالدارجة التونسية كيفاش نصنع كلمة سر قوية وعلاش باهي نستعمل تطبيق لإدارة كلمات السر.",
+          "response": "لحماء حساباتك على الإنترنت، عليك اتباع الخطوات التالية:\n\n1. **إنشاء كلمة مرور قوية:** الكلمة المرور القوية هي التي تتكون من 8 أحرف على الأقل، وتشمل الأحرف الكبيرة والصغيرة، الأرقام، ورموز خاصة مثل @ أو # أو $.\n\n2. **تجنب استخدام المعلومات الشخصية:** لا تستخدم في كلمة المرور معلومات شخصية مثل اسمك، تاريخ ميلادك، أو رقم الهاتف. هذه المعلومات يمكن للآخرين الحصول عليها بسهولة.\n\n3. **استخدام خدمة تذكر كلمة المرور:** إذا كانت الخدمة التي تستخدمها تقدم خدمة تذكر كلمة المرور، فاستخدمها. هذا يعني أنك لن تحتاج إلى تذكر كلمة المرور كل مرة، بل ستقوم الخدمة بحفظها لك.\n\n4. **استخدام تطبيقات إدارة كلمات السر:** توجد العديد من التطبيقات التي تساعدك في تخزين وكلمات السر الخاصة بك بطريقة آمنة. بعض الأمثلة على هذه التطبيقات هي LastPass، Dashlane، 1Password وغيرها. هذه التطبيقات تقدم لك خاص",
+          "latency_seconds": 5.45,
+          "tokens_generated": 256,
+          "tokens_per_second": 46.97,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_phishing",
+          "category": "Digital Safety",
+          "description": "Recognizing phishing emails and links",
+          "prompt": "وصلني إيميل يقول اللي حسابي البنكي باش يتسكر ولازم ننزل على رابط ونكتب معطياتي. كيفاش نعرف الإيميل هذا كينو صحيح وإلا محاولة تحيل وسرقة بيانات؟ جاوبني بالدارجة التونسية وأنصحني شنوة نعمل.",
+          "response": "أهلا وسهلا فيك، بخصوص ما تقول، البداية هي التأكد من مصدر البريد الإلكتروني. إذا كان البريد الإلكتروني يأتي من بنكك الرسمي، فهذا يعني أنه يمكن أن يكون حقيقيا. ولكن، إذا جاء من مورد غير معروف أو غير موثوق به، فهذا يعني أن هناك خطورة.\n\nالخطوات التي يمكن اتباعها:\n\n1. التحقق من عنوان البريد الإلكتروني: يجب أن يكون العنوان مرتبطًا بالبنك الذي تتعامل معه. إذا كان العنوان يبدو غريبًا أو غير مألوف، فربما هو مزيف.\n\n2. التحقق من طلب البريد الإلكتروني: البنوك عادة ما لا يطلبوا معلومات حسابك البنكي عبر البريد الإلكتروني. إذا كانت الطلب تشمل معلومات مثل رقم الحساب، كلمة المرور، أو أية معلومات شخصية أخرى، فهذا يعني أن البريد الإلكتروني مزيف.\n\n3. الاتصال بالبنك مباشرة: إذا كنت تشك في البريد الإلكتروني، يمكنك الاتصال بالبنك مباشرة للتأكد من صحته. البنوك عادة ما تقدم خدمة للمساعدة في هذه الحالات",
+          "latency_seconds": 5.43,
+          "tokens_generated": 256,
+          "tokens_per_second": 47.18,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_2fa",
+          "category": "Digital Safety",
+          "description": "Explaining 2FA and its importance",
+          "prompt": "برشا تطبيقات تطلب مني نفعل خاصية التحقق بخطوتين. شنوة معناها هذي بالظبط وعلاش مهمة برشا لحماية حساباتي؟ فسرهالي بالدارجة التونسية بطريقة مبسطة.",
+          "response": "التحقق بخطوتين هو طريقة تساعد في حماية حسابك على الإنترنت. يعني، عند التحقق بخطوتين، يتعين عليك تقديم معلومات مختلفة للتأكد من أنك أنت وليست شخص آخر الذي يحاول الدخول إلى حسابك.\n\nعلى سبيل المثال، قد يطلب منك التطبيق أن تقدم كلمة المرور الخاصة بك، ثم يرسل لك رسالة نصية أو إشعار على الهاتف الخاص بك تحتوي على رمز خاص. بعد أن تدخل هذا الرمز، سيتمكن التطبيق من التأكد أنك تمتلك الوصول إلى الهاتف الخاص بك، وأنك أنت وليست شخص آخر.\n\nهذا يساعد في الحد من الهجمات الإلكترونية حيث يمكن أن يحاول الناس اختراق حسابك حتى إذا كانوا قادرين على الحصول على كلمة المرور الخاصة بك، لأنهم لن يكونوا قادرين على الوصول إلى الهاتف الخاص بك دون أن يكونوا تجاربك.",
+          "latency_seconds": 4.26,
+          "tokens_generated": 205,
+          "tokens_per_second": 48.07,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_public_wifi",
+          "category": "Digital Safety",
+          "description": "Risks of using public Wi-Fi networks",
+          "prompt": "هل فما خطر كيف نكنكتي من ويفي بيبليك وعمومي في قهوة وإلا مطار؟ وشنوة ننجم نعمل باش نحمي روحي وتلفوني؟ جاوبني بالدارجة التونسية.",
+          "response": "أكيد، بس أولا تأكد من توصيل الواي فاي بيبليك بحسين وشوف إنك متصل بسرعة جيدة. لازم تتأكد من إعدادات الشبكة وتجربة تغيير كلمة السر إذا كانت تانية.\n\nفي قهوة، بحاجة تجنب الأماكن المزدحمة والضوضاء اللي تشتت تركيزك. تفضل مكان هادئ ومتلائم للعمل، وتأكد من تغطية الواي فاي جيدة.\n\nفي مطار، بحاجة تجنب الأماكن التي تشتت تركيزك مثل المتاجر أو المطاعم. تفضل مكان هادئ ومتلائم للعمل، وتأكد من تغطية الواي فاي جيدة.\n\nبالنسبة لحماية روحك وتلفونك، بحاجة تثبيت برامج حماية على الهاتف وتفعيل الوضع المظلم للشاشة لتجنب الإضاءة الزائدة. تذكر تجنب تحميل التطبيقات غير الموثوقة وتجنب النقر على الروابط الغير مألوف",
+          "latency_seconds": 5.59,
+          "tokens_generated": 256,
+          "tokens_per_second": 45.77,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_harassment",
+          "category": "Digital Safety",
+          "description": "Dealing with cyberbullying and harassment",
+          "prompt": "صاحبي يتعرض لمضايقات وتنمر على فيسبوك وإنستغرام وحالته النفسية تعبت. أنصحو بالدارجة التونسية شنوة الإجراءات العملية والقانونية اللي ينجم يعملها في تونس.",
+          "response": "أنا آسف لسماع عن صراعات صاحبك. في تونس، هناك عدة إجراءات قانونية وعمليات يمكن اتباعها لمواجهة المضايقات والتنمر عبر الإنترنت:\n\n1. **البلاغ**: يجب على صاحبك أن يبلغ الشرطة أو المكتب المحلي للشرطة. يتعين عليه تقديم الشكاوى كتابياً وتقديم الأدلة التي تثبت التهديدات والتنمر.\n\n2. **الاستعانة بالمحامين**: المحامون القانونيون في تونس يمكنهم تقديم المشورة القانونية والمساعدة في تقديم الشكاوى. يمكنهم أيضا مساعدتك في توثيق الأدلة.\n\n3. **الاستعانة ب服务中心 or الهيئات المعنية**: توجد العديد من الهيئات والمؤسسات التي تتعامل مع القضايا المتعلقة بالتنمر والتهديدات عبر الإنترنت في تونس. يمكن للأشخاص الذين يواجهون هذه المشكلات الاتصال بهذه الهيئات للحصول على الدعم والمشورة.\n\n4. **الاستعانة بالمنظمات غير الحكومية**: هناك العديد من المنظمات غير الحكومية في تونس التي تقدم الدعم",
+          "latency_seconds": 5.59,
+          "tokens_generated": 256,
+          "tokens_per_second": 45.76,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_scams",
+          "category": "Digital Safety",
+          "description": "Recognizing social media money scams",
+          "prompt": "فما شكون بعثلي مساج على مسنجر وقالي اللي أنا ربحت كادو كبير ولازم نبعثلو كود شحن تلفون باش يبعثلي الكادو. فسرلي بالدارجة التونسية علاش هذي عملية تحيل وكيفاش نتعامل مع النوع هذا من العباد.",
+          "response": "العملية التي تصفها تبدو وكأنها عملية احتيال. في هذه العملية، الشخص الذي يرسل لك رسالة على مسنجر يحاول أن يجعلك تعتقد أنه شخص قادم من شركة توزيع الهدايا أو من متجر ما، ويقدم لك هدية كبيرة مقابل كود الشحن.\n\nهذا النوع من العاملين هو شائع جدا، وغالبًا ما يستخدم لاحتيال الأشخاص. الشخص الذي يرسل لك الرسالة يحاول الحصول على المعلومات الخاصة بك، مثل رقم الهاتف، أو حتى كود الشحن، لكي يتمكن من الاستفادة منه في المستقبل.\n\nللتعامل مع هذا النوع من الأشخاص، يجب عليك التأكد من أنك لا تشارك أي معلومات شخصية أو حساسة. إذا كنت تشك في صحة الرسالة أو الشخص الذي يرسلها، يمكنك التواصل مباشرة مع الشركة أو المتجر المذكور في الرسالة للتأكد من صحة الطلب.\n\nإذا كنت تعتقد أنك قد تم احتيال عليك، يجب عليك التوجه إلى السلطات المحلية أو الشرطة للمساعدة في التحقيق.",
+          "latency_seconds": 5.17,
+          "tokens_generated": 240,
+          "tokens_per_second": 46.45,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_privacy_settings",
+          "category": "Digital Safety",
+          "description": "Configuring privacy on Facebook/Instagram",
+          "prompt": "نحب نحمي خصوصيتي على مواقع التواصل الاجتماعي وما نحبش أي حد يشوف تصاوري ومعلوماتي الشخصية. شنوة أهم إعدادات الخصوصية اللي لازم نثبت فيها؟ انصحني بالدارجة التونسية.",
+          "response": "بالطبع، أنا هنا لأساعدك. في تطبيقات التواصل الاجتماعي، هناك عدة إعدادات خصوصية تساعدك على حماية خصوصيتك:\n\n1. **التحكم في من يرى الصور والفيديوهات**: في معظم التطبيقات، يمكنك تحديد من يمكنه رؤية الصور والفيديوهات الخاصة بك. تأكد من أن فقط الأصدقاء أو الأشخاص الذين تثق بهم يمكنهم رؤية هذه المحتوى.\n\n2. **التحكم في مشاركة المعلومات**: تأكد من أن المعلومات الشخصية مثل رقم الهاتف، البريد الإلكتروني، ومكان السكن لا يتم مشاركتها مع الجميع. يمكنك تحديد من يمكنه رؤية هذه المعلومات.\n\n3. **التحكم في الرسائل والملاحظات**: تأكد من أن الرسائل والملاحظات التي تكتبها للآخرين لا تصل إلى الأشخاص الذين لا ترغب في مشاركتهم معهم.\n\n4. **التحكم في الإشعارات**: تأكد من أن الإشعارات التي تتعلق بنشاط الآخرين لا تزعجك. يمكنك تعديل الإعدادات لكي تتم إزالة الإشعارات",
+          "latency_seconds": 5.74,
+          "tokens_generated": 256,
+          "tokens_per_second": 44.63,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_malware",
+          "category": "Digital Safety",
+          "description": "Protecting devices from malware/viruses",
+          "prompt": "كيفاش نجم نحمي الحاسوب وتلفوني من الفيروسات والبرمجيات الخبيثة؟ اعطيني نصائح عملية بالدارجة التونسية.",
+          "response": "بالطبع، يمكننا توجيهك في كيفية حماية جهاز الكمبيوتر والهاتف المحمول من الفيروسات والبرمجيات الخبيثة. إليك بعض النصائح العملية:\n\n1. تحديث البرامج: تأكد من تحديث جميع برامجك وتطبيقاتك بشكل دوري. تقدم الشركات مطورات البرمجيات تحديثات لتحسين الأداء وتحمي من الفيروسات.\n\n2. استخدام برنامج مكافحة الفيروسات: تأكد من تثبيت برنامج مكافحة الفيروسات على جهاز الكمبيوتر والهاتف المحمول. تحقق من التحديثات الدورية للبرنامج لضمان حمايتك من الأنواع الجديدة من الفيروسات.\n\n3. تجنب النقر على الروابط المشبوهة: لا تضغط على الروابط أو تحميل الملفات من المواقع التي تبدو غير موثوقة أو غير آمنة. \n\n4. تغيير كلمات المرور بانتظام: تأكد من تغيير كلمات المرور الخاصة بك بانتظام. هذا يجعل من الصعب على الآخرين الوصول إلى حسابك.\n\n5. ت",
+          "latency_seconds": 5.95,
+          "tokens_generated": 256,
+          "tokens_per_second": 43.05,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_backup",
+          "category": "Digital Safety",
+          "description": "Importance of data backups",
+          "prompt": "علاش مهم برشا نعمل نسخة احتياطية لـ تصاوري وخدمتي ديما؟ وكيفاش ننجم نعملها بطريقة آمنة؟ جاوبني بالدارجة التونسية.",
+          "response": "النسخ الاحتياطي مهما في التصوير والخدمة لأنك تساعد على حماية المعلومات المهمة من فقدانها أو التلف. في حالة حدوث خطأ ما، مثل حدوث كارثة طبيعية، أو تلف الأجهزة، أو سرقة البيانات، يمكن استعادة النسخ الاحتياطي للعثور على البيانات المفقودة.\n\nلعمل نسخة احتياطية بطريقة آمنة، أولاً، يجب أن تحدد ما تحتاج إلى نسخه الاحتياطي. هذا قد يشمل الصور، الملفات، البرامج، البيانات الشخصية، والبرامج التي تحتاجها يوميا. \n\nثم، يجب أن تقرر مكان تخزين النسخ الاحتياطي. يمكنك تخزين النسخ الاحتياطي على القرص الصلب المحلي، أو على القرص الثابت الخارجي، أو في خادم نسخ احتياطي خارجي، أو حتى في السحابة. \n\nأخيرًا، تأكد من تحديث النسخ الاحتياطي بشكل دوري. هذا يعني أنك يجب أن تقوم بنسخ البيانات الجديدة أو المعدلة بشكل دوري. \n\nوأخيرا، تأكد من",
+          "latency_seconds": 5.71,
+          "tokens_generated": 256,
+          "tokens_per_second": 44.85,
+          "success": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "model_id": "meta-llama/Meta-Llama-3-8B-Instruct",
+      "success": true,
+      "evaluations": [
+        {
+          "prompt_id": "safety_password",
+          "category": "Digital Safety",
+          "description": "Creating strong passwords and using password managers",
+          "prompt": "كيفاش نجم نحمي حساباتي على الأنترنات؟ فسرلي بالدارجة التونسية كيفاش نصنع كلمة سر قوية وعلاش باهي نستعمل تطبيق لإدارة كلمات السر.",
+          "response": "Salaam! Let me explain to you how to protect your online accounts and create a strong password in Tunisian dialect.\n\n**How to protect your online accounts?**\n\n1. **Use a strong password**: A strong password is a combination of letters, numbers, and special characters that is hard to guess. Try to use a password that is at least 12 characters long and includes a mix of uppercase and lowercase letters, numbers, and special characters.\n2. **Use a password manager**: A password manager is a tool that helps you generate and store unique, strong passwords for each of your online accounts. This way, you only have to remember one master password to access all your other passwords.\n3. **Enable two-factor authentication**: Two-factor authentication (2FA) adds an extra layer of security to your accounts by requiring you to enter a code sent to your phone or email in addition to your password.\n4. **Keep your software up to date**: Make sure your operating system, browser, and other software are up to date with the latest security patches.\n5. **Be cautious with public Wi-Fi**: Avoid using public Wi-Fi to access sensitive information, as it may not be secure.\n\n**How to create a strong password?**\n\n1. **Use a passphrase",
+          "latency_seconds": 6.04,
+          "tokens_generated": 256,
+          "tokens_per_second": 42.4,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_phishing",
+          "category": "Digital Safety",
+          "description": "Recognizing phishing emails and links",
+          "prompt": "وصلني إيميل يقول اللي حسابي البنكي باش يتسكر ولازم ننزل على رابط ونكتب معطياتي. كيفاش نعرف الإيميل هذا كينو صحيح وإلا محاولة تحيل وسرقة بيانات؟ جاوبني بالدارجة التونسية وأنصحني شنوة نعمل.",
+          "response": "Ya habibi, don't worry, I'm here to help you out!\n\nFirst of all, let me tell you that this email is likely a phishing attempt. The scammers are trying to trick you into revealing your sensitive banking information.\n\nHere's what you should do:\n\n1. Don't click on any links or download any attachments from this email. It's a big no-no!\n2. Don't respond to the email or reply to it. This will only confirm to the scammers that your email address is active and they might send more phishing emails.\n3. Report the email to your bank's customer service department. They'll be able to help you identify the scam and take appropriate action.\n\nNow, let me give you some advice on how to spot phishing emails in the future:\n\n1. Be cautious of emails that ask you to provide sensitive information, such as your password, credit card number, or bank account details.\n2. Check the email address of the sender. Legitimate banks and financial institutions will never ask you to provide sensitive information via email. If the email address looks suspicious or doesn't match the bank's official email address, it's likely a phishing attempt.\n3. Look for spelling and grammar mistakes. Legitimate emails from banks and financial institutions are",
+          "latency_seconds": 6.17,
+          "tokens_generated": 256,
+          "tokens_per_second": 41.51,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_2fa",
+          "category": "Digital Safety",
+          "description": "Explaining 2FA and its importance",
+          "prompt": "برشا تطبيقات تطلب مني نفعل خاصية التحقق بخطوتين. شنوة معناها هذي بالظبط وعلاش مهمة برشا لحماية حساباتي؟ فسرهالي بالدارجة التونسية بطريقة مبسطة.",
+          "response": "Salaam! 😊\n\nSo, you're asking about 2FA (Two-Factor Authentication) and why it's important to protect your accounts. Let me explain it to you in a simple way, using Tunisian dialect. 🇹🇳\n\n2FA is like having a double lock on your door. You know, when you have a key to unlock your door, but then you also have a second lock that requires a special code to open it. This way, even if someone gets your key (your password), they still can't get in because they don't have the code.\n\nIn the same way, when you enable 2FA on an app or website, you're adding an extra layer of security to your account. Instead of just using your password to log in, you also need to enter a special code that's sent to your phone or generated by an app.\n\nThis code is usually a one-time use code, so even if someone gets your password, they can't use it to log in because they won't have the code. It's like having a second key that only you have, and it's very hard for someone to get.\n\nSo, why is 2FA important? Well, it's like having a safety",
+          "latency_seconds": 6.18,
+          "tokens_generated": 256,
+          "tokens_per_second": 41.42,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_public_wifi",
+          "category": "Digital Safety",
+          "description": "Risks of using public Wi-Fi networks",
+          "prompt": "هل فما خطر كيف نكنكتي من ويفي بيبليك وعمومي في قهوة وإلا مطار؟ وشنوة ننجم نعمل باش نحمي روحي وتلفوني؟ جاوبني بالدارجة التونسية.",
+          "response": "Ya khir, mabrouk! (أهلاً خير، مبروك!) You're asking about how to protect yourself from the dangers of public Wi-Fi and coffee shops, and how to keep your phone and soul safe, right?\n\nListen, ya khir, in these modern times, it's essential to be cautious when using public Wi-Fi and coffee shops. Here's what you can do:\n\n1. Use a VPN (Virtual Private Network): It's like a shield that encrypts your internet connection, making it harder for hackers to snoop on your data. You can get a VPN app on your phone or laptop.\n2. Keep your phone and laptop up to date: Make sure your devices have the latest software updates, which often include security patches and bug fixes.\n3. Use strong passwords: Choose complex passwords and don't reuse them across multiple accounts. You can use a password manager to generate and store unique passwords.\n4. Be mindful of public Wi-Fi: Avoid using public Wi-Fi for sensitive activities like online banking, shopping, or accessing personal accounts. If you must use public Wi-Fi, use a VPN and be cautious of phishing scams.\n5. Keep your phone close: Don't leave your phone unattended, especially in crowded",
+          "latency_seconds": 6.21,
+          "tokens_generated": 256,
+          "tokens_per_second": 41.25,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_harassment",
+          "category": "Digital Safety",
+          "description": "Dealing with cyberbullying and harassment",
+          "prompt": "صاحبي يتعرض لمضايقات وتنمر على فيسبوك وإنستغرام وحالته النفسية تعبت. أنصحو بالدارجة التونسية شنوة الإجراءات العملية والقانونية اللي ينجم يعملها في تونس.",
+          "response": "I'm so sorry to hear that your friend is going through a tough time with cyberbullying on Facebook and Instagram, and that it's affecting their mental health.\n\nIn Tunisia, there are several legal and practical measures that your friend can take to address the situation. Here are some steps they can consider:\n\n**Legal Measures:**\n\n1. **Report the bullying to the social media platforms**: Your friend can report the bullying to Facebook and Instagram by filling out their respective reporting forms. This will help the platforms take action against the perpetrators.\n2. **File a complaint with the Tunisian authorities**: Your friend can file a complaint with the Tunisian authorities, such as the Ministry of Justice, the Ministry of Communication Technologies, or the National Authority for the Protection of Personal Data.\n3. **Seek legal action**: If the bullying is severe and has caused significant harm, your friend may want to consider seeking legal action against the perpetrators.\n\n**Practical Measures:**\n\n1. **Block the bullies**: Your friend can block the bullies on Facebook and Instagram to prevent them from contacting them.\n2. **Change their social media settings**: Your friend can change their social media settings to limit who can see their posts and profiles.\n3. **Take a break from social media**: Your",
+          "latency_seconds": 6.22,
+          "tokens_generated": 256,
+          "tokens_per_second": 41.18,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_scams",
+          "category": "Digital Safety",
+          "description": "Recognizing social media money scams",
+          "prompt": "فما شكون بعثلي مساج على مسنجر وقالي اللي أنا ربحت كادو كبير ولازم نبعثلو كود شحن تلفون باش يبعثلي الكادو. فسرلي بالدارجة التونسية علاش هذي عملية تحيل وكيفاش نتعامل مع النوع هذا من العباد.",
+          "response": "What a clever scam! 😊\n\nSo, someone is sending you a message on Messenger, claiming that you've won a big prize and that you need to send a code to recharge your phone to receive the prize. This is a classic example of a phishing scam.\n\nHere's what's happening:\n\n1. The scammer is trying to trick you into giving them your personal information, such as your phone number or credit card details.\n2. They're using a fake prize as bait to get you to respond and engage with the message.\n3. Once you send the code or any other information, the scammer will use it to steal your personal data or even hack your phone.\n\nSo, what should you do?\n\n1. Don't respond to the message or engage with the scammer.\n2. Don't send any codes or personal information.\n3. Report the message as spam to Facebook (if it's a Messenger message) or to your phone provider.\n4. Be cautious when receiving unsolicited messages or offers that seem too good to be true.\n\nIn Tunisian dialect, you can say:\n\n\"ماشي، ماشي، ماشي! هذي عملية خديعة، ماشي نتعامل معهاش. نREPORT هذي الر",
+          "latency_seconds": 5.85,
+          "tokens_generated": 256,
+          "tokens_per_second": 43.76,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_privacy_settings",
+          "category": "Digital Safety",
+          "description": "Configuring privacy on Facebook/Instagram",
+          "prompt": "نحب نحمي خصوصيتي على مواقع التواصل الاجتماعي وما نحبش أي حد يشوف تصاوري ومعلوماتي الشخصية. شنوة أهم إعدادات الخصوصية اللي لازم نثبت فيها؟ انصحني بالدارجة التونسية.",
+          "response": "Khair, my friend! Protecting your privacy on social media is crucial in today's digital age. I'm happy to guide you through the essential privacy settings you should enable to keep your personal information and photos private. Here's a step-by-step guide in Tunisian Arabic:\n\n1. **الخصوصية** (Privacy): Go to your profile settings and click on \"الخصوصية\" (Privacy). Make sure the toggle switch is set to \"مغلق\" (Closed) or \"محدود\" (Limited) to restrict who can see your posts, photos, and other information.\n2. **المنشئين** (Creators): In this section, you can control who can see your posts, photos, and other content. Choose \"أصدقاء\" (Friends) or \"مجموعة من الأصدقاء\" (Friends except...) to limit who can view your content.\n3. **المنشورات** (Posts): In this section, you can control who can see your posts. Choose \"أصدقاء\" (Friends) or \"مجموعة من الأصدقاء\" (Friends except...) to limit who can view your posts.\n4. **الصور** (Photos): In this section, you can control who can",
+          "latency_seconds": 6.05,
+          "tokens_generated": 256,
+          "tokens_per_second": 42.34,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_malware",
+          "category": "Digital Safety",
+          "description": "Protecting devices from malware/viruses",
+          "prompt": "كيفاش نجم نحمي الحاسوب وتلفوني من الفيروسات والبرمجيات الخبيثة؟ اعطيني نصائح عملية بالدارجة التونسية.",
+          "response": "Ya habibi! Protecting your computer and phone from viruses and malware is a must in today's digital age. Here are some practical tips in Tunisian dialect to help you keep your devices safe:\n\n**For your computer:**\n\n1. **Update, update, update!** Make sure your operating system, browser, and other software are up-to-date, ya 3ayech! Outdated software can leave your computer vulnerable to attacks.\n2. **Use antivirus software** like Avast, AVG, or Norton. These programs will scan your computer for viruses and malware, and remove them if found.\n3. **Be cautious with downloads**. Only download software and files from trusted sources, and read reviews before installing anything new.\n4. **Use strong passwords** and keep them confidential. Avoid using the same password for multiple accounts.\n5. **Back up your data** regularly. This way, if your computer gets infected, you can restore your files from a backup.\n6. **Use a firewall** to block unauthorized access to your computer.\n7. **Avoid suspicious emails and attachments**. If an email looks suspicious or contains attachments from unknown senders, delete it without opening it.\n\n**For your phone:**\n\n1. **Use a secure lock screen**",
+          "latency_seconds": 5.9,
+          "tokens_generated": 256,
+          "tokens_per_second": 43.39,
+          "success": true
+        },
+        {
+          "prompt_id": "safety_backup",
+          "category": "Digital Safety",
+          "description": "Importance of data backups",
+          "prompt": "علاش مهم برشا نعمل نسخة احتياطية لـ تصاوري وخدمتي ديما؟ وكيفاش ننجم نعملها بطريقة آمنة؟ جاوبني بالدارجة التونسية.",
+          "response": "Ya khair, ya habibi! (Oh, good, my friend!)\n\nYou're asking why it's important to make a backup copy of your pictures and data, and how to do it safely. Well, let me tell you, it's like having a spare key to your house, ya 3ayesh! (you know what I mean!)\n\nFirst, let's talk about why backups are important. Imagine if your phone or computer crashes, or if you accidentally delete some important files. Without a backup, you'll be left with nothing but a bunch of useless pixels and a broken heart, ya 3ayesh! But with a backup, you can restore your files and get back to business as usual.\n\nNow, let's talk about how to make a backup safely. Here are some tips:\n\n1. Use an external hard drive: This is like having a spare key to your house, ya 3ayesh! An external hard drive is a separate device that you can use to store your files, and it's not connected to your computer or phone, so it's safe from viruses and other malware.\n2. Use cloud storage: Cloud storage is like having a virtual safe, ya 3ayesh! You can store your files online, and access",
+          "latency_seconds": 6.1,
+          "tokens_generated": 256,
+          "tokens_per_second": 41.93,
+          "success": true
+        }
+      ],
+      "error": null
+    }
+  ]
+}
