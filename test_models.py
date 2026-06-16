@@ -14,6 +14,18 @@ import traceback
 # Import torch and Hugging Face packages conditionally
 try:
     import torch
+    import torch.nn as nn
+    
+    # Monkey-patch nn.Module.set_submodule for compatibility with older PyTorch versions (< 2.5)
+    if not hasattr(nn.Module, "set_submodule"):
+        def _set_submodule(self, target: str, module: nn.Module) -> None:
+            atoms = target.split(".")
+            name = atoms.pop(-1)
+            mod = self
+            for item in atoms:
+                mod = getattr(mod, item)
+            setattr(mod, name, module)
+        nn.Module.set_submodule = _set_submodule
 except ImportError:
     print("[!] PyTorch is not installed. Please run: pip install torch")
     sys.exit(1)
