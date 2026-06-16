@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "timestamp": "2026-06-16 18:25:41",
+    "quantization": "4-bit",
+    "temperature": 0.3,
+    "max_new_tokens": 256
+  },
+  "runs": [
+    {
+      "model_id": "meta-llama/Meta-Llama-3-8B-Instruct",
+      "success": true,
+      "evaluations": [
+        {
+          "prompt_id": "conversational_intro",
+          "category": "Conversational",
+          "description": "Greeting and basic chat in Tunisian Arabic",
+          "prompt": "أحكيلي بالتونسي شنوة تنجم تعمل كـ مساعد ذكي وكيفاش تنجم تعاوني؟",
+          "response": "What a great question!\n\nAs a Tunisian AI assistant, I'm designed to assist and collaborate with humans in various ways. Here's how I work:\n\n**Assisting**: I can help with tasks such as:\n\n1. **Answering questions**: I can provide information on a wide range of topics, from science and history to entertainment and culture.\n2. **Generating ideas**: I can assist in brainstorming and idea generation, helping you come up with creative solutions to problems.\n3. **Language translation**: I can translate text from Arabic to French, English, and other languages, and vice versa.\n4. **Text summarization**: I can summarize long pieces of text, extracting the main points and key information.\n\n**Collaborating**: I can work with you to:\n\n1. **Generate content**: I can help write articles, blog posts, or social media content, using my language generation capabilities.\n2. **Conduct research**: I can assist in researching topics, gathering information, and providing insights.\n3. **Solve problems**: I can help analyze problems, identify potential solutions, and provide recommendations.\n4. **Create chatbots**: I can help design and develop chatbots, using my conversational AI capabilities.\n\n**How I work**: My collaboration process typically",
+          "latency_seconds": 12.9,
+          "tokens_generated": 256,
+          "tokens_per_second": 19.85,
+          "success": true
+        },
+        {
+          "prompt_id": "conversational_story",
+          "category": "Conversational",
+          "description": "Short story generation in Tunisian Arabic",
+          "prompt": "أحكيلي حكاية قصيرة بالتونسي على راجل مشا للمارشي يلوج على الحوت.",
+          "response": "Here's a short story in Tunisian dialect:\n\n\"Ragoul kouna fi l-maarshi, yloug ɣal ḥouṭ. Kif kif, ykun ɣal ɣurba, ykun ɣal ɣurba, ykun ɣal ɣurba... (The man went to the market, to buy a fish. He walked, he walked, he walked...).\n\n\"Ykun ɣal ɣurba, ykun ɣal ɣurba, ykun ɣal ɣurba... (He walked, he walked, he walked...).\n\n\"Kif kif, ykun ɣal ɣurba, ykun ɣal ɣurba, ykun ɣal ɣurba... (He walked, he walked, he walked...).\n\n\"Ykun ɣal ɣurba, ykun ɣal ɣurba, ykun ɣal ɣurba... (He walked, he",
+          "latency_seconds": 12.58,
+          "tokens_generated": 256,
+          "tokens_per_second": 20.34,
+          "success": true
+        },
+        {
+          "prompt_id": "translation_en_to_tn",
+          "category": "Translation",
+          "description": "Translate English to Tunisian Arabic",
+          "prompt": "ترجم الجملة هذي للدارجة التونسية:\n'I am very tired today because I worked all night long, and now I just want to drink a cup of coffee and sleep.'",
+          "response": "Here's the translation in Tunisian Dialect:\n\n\"Ana khirjiti chay fakhri, 'aaj fi 'aaj khadma 'ala l-layl, w'ahwi 'aaj fi 'aaj khayr 'aaj fi 'aaj t'khalik shai wa t'nham.\"\n\nNote: Tunisian Dialect is a spoken dialect and not a standardized written dialect, so the translation may vary depending on the region and the speaker. However, the above translation is a common way to express the sentence in Tunisian Dialect.\n\nHere's a breakdown of the translation:\n\n* \"Ana khirjiti chay\" means \"I am very tired\" (khirjiti means \"tired\" and chay is an intensifier).\n* \"fakhri\" means \"today\".\n* \"'aaj fi 'aaj khadma 'ala l-layl\" means \"because I worked all night long\" (khadma means \"to work\" and 'ala l-layl means \"all night long\").\n* \"w'ahwi 'aaj fi 'aaj khayr\" means \"and now I just want\" (w'ahwi means \"and",
+          "latency_seconds": 12.3,
+          "tokens_generated": 256,
+          "tokens_per_second": 20.81,
+          "success": true
+        },
+        {
+          "prompt_id": "translation_msa_to_tn",
+          "category": "Translation",
+          "description": "Translate Modern Standard Arabic (MSA) to Tunisian Arabic",
+          "prompt": "ترجم الجملة هذي من الفصحى للدارجة التونسية:\n'أين تقع محطة القطار وكيف يمكنني الذهاب إلى هناك؟ وهل التذاكر متوفرة الآن؟'",
+          "response": "Here's the translation of the sentence from Modern Standard Arabic to Tunisian Dialect:\n\n\"Where's the train station and how can I get there? Are tickets available now?\"\n\nNote: Tunisian Dialect is a colloquial dialect and the translation may vary depending on the region and the speaker. Here's a possible translation in Tunisian Dialect:\n\n\"Ou est la gare de train et comment j'ir à là? Les billets sont disponible maintenant?\"\n\nOr, in a more informal tone:\n\n\"Ou est la gare de train, ya khair? Les billets sont disponible maintenant?\"\n\nNote: \"ya khair\" is a Tunisian expression that roughly translates to \"good\" or \"okay\".",
+          "latency_seconds": 6.97,
+          "tokens_generated": 148,
+          "tokens_per_second": 21.22,
+          "success": true
+        },
+        {
+          "prompt_id": "cultural_idiom",
+          "category": "Culture & Idioms",
+          "description": "Explaining a Tunisian idiom",
+          "prompt": "فسرلي بالباهي المثل التونسي هذا شنوة معناه ووين نستعملوه: 'كان صبت اندبي وكان خلت اندبي'.",
+          "response": "A classic Tunisian proverb! 😊\n\nThe proverb \"كان صبت اندبي وكان خلت اندبي\" is a beautiful example of Tunisian Arabic's poetic and idiomatic expressions. Let me break it down for you:\n\n* \"كان\" (kān) is the past tense of the verb \"كان\" (kana), which means \"to be\" or \"to exist\".\n* \"صبت\" (ṣabt) is the past tense of the verb \"صبت\" (ṣabba), which means \"to be tired\" or \"to be exhausted\".\n* \"اندبي\" (andabī) is a noun that means \"the end\" or \"the limit\".\n* \"كان خلت اندبي\" (kān khalt andabī) is a phrase that means \"it was exhausted to the end\" or \"it was worn out to the limit\".\n\nSo, when you put it all together, the proverb \"كان صبت اندبي وكان خلت اندبي\" can be translated to:\n\n\"It was exhausted to the end, and it was worn out to the limit.\"\n\nOr, in a more poetic sense:\n\n\"It was drained to the very end, and it was exhausted to the utmost.\"\n\nThis proverb is often",
+          "latency_seconds": 12.75,
+          "tokens_generated": 256,
+          "tokens_per_second": 20.07,
+          "success": true
+        },
+        {
+          "prompt_id": "cultural_geography",
+          "category": "Culture & Geography",
+          "description": "Tunisian regional and tourist advice",
+          "prompt": "شنوة أحسن بلاصة تنصحني نزورها في تونس في الصيف؟ وعلاش هي بالذات؟",
+          "response": "Tunisia in the summer! What a wonderful idea! Here are some of the best places to visit in Tunisia during the summer, along with reasons why you should visit them:\n\n1. **Sidi Bou Said**: This picturesque town is a must-visit in Tunisia. Its white and blue buildings, narrow streets, and stunning views of the Mediterranean Sea make it a perfect summer destination. Don't miss the beautiful beaches and the vibrant souks (markets).\n\nWhy: Sidi Bou Said is a charming and historic town that offers a unique blend of Mediterranean and Arab cultures. Its picturesque architecture and stunning views make it a perfect spot for photography and relaxation.\n\n2. **Djerba Island**: Located off the coast of Tunisia, Djerba Island is a tranquil and beautiful destination. Its pristine beaches, ancient ruins, and traditional villages make it an ideal summer getaway.\n\nWhy: Djerba Island is a haven for beach lovers, history buffs, and those seeking a relaxing summer vacation. Its laid-back atmosphere and stunning natural beauty make it an unforgettable experience.\n\n3. **Carthage**: This ancient city is a UNESCO World Heritage Site and a must-visit in Tunisia. Explore the ruins of the Roman city, including the amphitheater, basilica, and baths.",
+          "latency_seconds": 12.66,
+          "tokens_generated": 256,
+          "tokens_per_second": 20.22,
+          "success": true
+        },
+        {
+          "prompt_id": "sentiment_negative",
+          "category": "Sentiment Analysis",
+          "description": "Classifying negative Tunisian Arabic statement",
+          "prompt": "شنوة الإحساس (إيجابي، سلبي، محايد) متع الجملة هذي بالتونسي: 'الخدمة هذي فدّدتني وكرهت حياتي بسببها والكرهبة ديما معطلة'؟ جاوب في كلمة وحدة وبدون تفاصيل.",
+          "response": "سلبي.",
+          "latency_seconds": 0.21,
+          "tokens_generated": 4,
+          "tokens_per_second": 18.76,
+          "success": true
+        },
+        {
+          "prompt_id": "sentiment_positive",
+          "category": "Sentiment Analysis",
+          "description": "Classifying positive Tunisian Arabic statement",
+          "prompt": "شنوة الإحساس (إيجابي، سلبي، محايد) متع الجملة هذي بالتونسي: 'ملا جو وملا كادو مزيان، يعطيك الصحة وفرحتني برشا!'؟ جاوب في كلمة وحدة وبدون تفاصيل.",
+          "response": "إيجابي.",
+          "latency_seconds": 0.26,
+          "tokens_generated": 5,
+          "tokens_per_second": 19.52,
+          "success": true
+        },
+        {
+          "prompt_id": "code_switching",
+          "category": "Code-Switching",
+          "description": "Tunisian Arabic mixed with French words",
+          "prompt": "جاوبني بالتونسي مع استعمال شوية كلمات بالفرنسية (كيفما يحكيو برشا توانسة في الشارع): كيفاش نجم نعمل رز بالفاكهة؟",
+          "response": "Ya khair, habibi! (Oh, good, my friend!)\n\nPour faire du riz avec des fruits, il faut d'abord préparer les ingrédients. (To make rice with fruits, you need to prepare the ingredients first.)\n\nPrends un bol d'eau et ajoute-y un peu de sel. (Take a bowl of water and add a little salt.)\n\nFais chauffer l'eau dans la cuisinière, puis ajoute-y un bol de riz brun ou blanc, selon ton goût. (Heat the water in the stove, then add a bowl of brown or white rice, according to your taste.)\n\nLaisse cuire le riz pendant environ 15-20 minutes, ou jusqu'à ce qu'il soit cuit. (Let the rice cook for about 15-20 minutes, or until it's cooked.)\n\nMaintenant, prépare les fruits. Tu peux utiliser des fruits tels que les bananes, les fraises, les framboises, les mangues, etc. (Now, prepare the fruits. You can use fruits like bananas, strawberries, raspberries, mangoes, etc.)\n\nCoupe les fruits en petits morceaux et mélange-les avec le riz c",
+          "latency_seconds": 12.56,
+          "tokens_generated": 256,
+          "tokens_per_second": 20.38,
+          "success": true
+        }
+      ],
+      "error": null
+    }
+  ]
+}
