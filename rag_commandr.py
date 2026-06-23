@@ -1,25 +1,32 @@
 #!/usr/bin/env python3
 import sys
+from importlib.machinery import ModuleSpec
 from unittest.mock import MagicMock
 
-# Mock torchvision to prevent version-mismatched torchvision C++ operators from crashing transformers/sentence-transformers
-
+# Mock module class that returns MagicMock for everything
 class MockModule(MagicMock):
     @classmethod
     def __getattr__(cls, name):
         return MagicMock()
 
-sys.modules['torchvision'] = MockModule()
-sys.modules['torchvision.io'] = MockModule()
-sys.modules['torchvision.ops'] = MockModule()
-sys.modules['torchvision.transforms'] = MockModule()
-sys.modules['torchvision.transforms.functional'] = MockModule()
-sys.modules['torchvision.utils'] = MockModule()
+# Custom finder to intercept imports of torchvision and torchaudio and their submodules
+class MockFinder:
+    def find_spec(self, fullname, path, target=None):
+        if fullname.startswith("torchvision") or fullname.startswith("torchaudio"):
+            return ModuleSpec(fullname, self)
+            
+    def create_module(self, spec):
+        return MockModule()
+        
+    def exec_module(self, module):
+        pass
 
-sys.modules['torchaudio'] = MockModule()
-sys.modules['torchaudio.functional'] = MockModule()
-sys.modules['torchaudio.transforms'] = MockModule()
-sys.modules['torchaudio.utils'] = MockModule()
+# Clean up any existing entries in sys.modules and register the finder
+for key in list(sys.modules.keys()):
+    if key.startswith("torchvision") or key.startswith("torchaudio"):
+        del sys.modules[key]
+
+sys.meta_path.insert(0, MockFinder())
 
 import os
 import gc
