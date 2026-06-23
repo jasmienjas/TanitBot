@@ -13,6 +13,7 @@ sys.modules['torchvision'] = MockModule()
 sys.modules['torchvision.io'] = MockModule()
 sys.modules['torchvision.ops'] = MockModule()
 sys.modules['torchvision.transforms'] = MockModule()
+sys.modules['torchvision.transforms.functional'] = MockModule()
 sys.modules['torchvision.utils'] = MockModule()
 
 import os
