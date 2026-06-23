@@ -28,6 +28,28 @@ for key in list(sys.modules.keys()):
 
 sys.meta_path.insert(0, MockFinder())
 
+# Pre-load nvidia python package shared libraries (like libnvJitLink) to resolve bitsandbytes load errors
+import glob
+import ctypes
+try:
+    import os
+    import sys
+    # Search in all directories in sys.path (which includes site-packages) for nvidia libraries
+    for path in sys.path:
+        if not path or not os.path.exists(path):
+            continue
+        for pattern in ["**/libnvJitLink.so*", "**/libcudart.so*", "**/libcublas.so*"]:
+            # Search both nested namespace and flat packages
+            libs = glob.glob(os.path.join(path, "nvidia", "**", pattern), recursive=True)
+            libs += glob.glob(os.path.join(path, "nvidia_*", "**", pattern), recursive=True)
+            for lib in libs:
+                try:
+                    ctypes.CDLL(lib)
+                except Exception:
+                    pass
+except Exception:
+    pass
+
 import os
 import gc
 import sys
@@ -307,7 +329,7 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         bnb_config = BitsAndBytesConfig(load_in_8bit=True)
 
     if torch.cuda.is_available():
-        device_map = "auto"
+        device_map = {"": 0} if bnb_config is not None else "auto"
         torch_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
         print(f"    [Config] GPU detected. Using half-precision: {torch_dtype}")
     else:
