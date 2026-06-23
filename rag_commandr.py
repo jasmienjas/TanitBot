@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+import sys
+from unittest.mock import MagicMock
+
+# Mock torchvision to prevent version-mismatched torchvision C++ operators from crashing transformers/sentence-transformers
+
+class MockModule(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MagicMock()
+
+sys.modules['torchvision'] = MockModule()
+sys.modules['torchvision.io'] = MockModule()
+sys.modules['torchvision.ops'] = MockModule()
+sys.modules['torchvision.transforms'] = MockModule()
+sys.modules['torchvision.utils'] = MockModule()
 
 import os
 import gc
@@ -279,7 +294,7 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         bnb_config = BitsAndBytesConfig(load_in_8bit=True)
 
     if torch.cuda.is_available():
-        device_map = {"": 0} if bnb_config is not None else "auto"
+        device_map = "auto"
         torch_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
         print(f"    [Config] GPU detected. Using half-precision: {torch_dtype}")
     else:
@@ -301,6 +316,7 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         quantization_config=bnb_config,
         torch_dtype=torch_dtype,
         device_map=device_map,
+        low_cpu_mem_usage=True,
         token=hf_token,
         trust_remote_code=True,
         cache_dir=cache_dir
@@ -504,14 +520,9 @@ def main():
         except Exception as e:
             print(f"[!] Warning: Failed to log in with token: {e}")
 
-    # Step 1: Initialize Embedding Model (used for indexing or retrieval)
-    print(f"[+] Loading embedding model for RAG: {args.embedding_model}")
-    try:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        embed_model = SentenceTransformer(args.embedding_model, device=device)
-    except Exception as e:
-        print(f"[!] Warning: Failed to load embedding model on CUDA ({e}). Falling back to CPU.")
-        embed_model = SentenceTransformer(args.embedding_model, device="cpu")
+    # Step 1: Initialize Embedding Model on CPU (saves GPU VRAM for the 35B generation model)
+    print(f"[+] Loading embedding model for RAG (CPU-enforced): {args.embedding_model}")
+    embed_model = SentenceTransformer(args.embedding_model, device="cpu")
 
     # Step 2: Ensure Index is Loaded or Built
     index, chunks = None, None
