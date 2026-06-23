@@ -16,6 +16,11 @@ sys.modules['torchvision.transforms'] = MockModule()
 sys.modules['torchvision.transforms.functional'] = MockModule()
 sys.modules['torchvision.utils'] = MockModule()
 
+sys.modules['torchaudio'] = MockModule()
+sys.modules['torchaudio.functional'] = MockModule()
+sys.modules['torchaudio.transforms'] = MockModule()
+sys.modules['torchaudio.utils'] = MockModule()
+
 import os
 import gc
 import sys
