@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import os
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 import sys
 from importlib.machinery import ModuleSpec
 from unittest.mock import MagicMock
@@ -352,6 +354,7 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         torch_dtype=torch_dtype,
         device_map=device_map,
         low_cpu_mem_usage=True,
+        attn_implementation="sdpa",
         token=hf_token,
         trust_remote_code=True,
         cache_dir=cache_dir
@@ -529,7 +532,7 @@ def main():
     parser.add_argument(
         "--top-k",
         type=int,
-        default=4,
+        default=3,
         help="Number of retrieved text chunks to feed to the model."
     )
     parser.add_argument(
