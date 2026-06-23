@@ -11,17 +11,16 @@ import traceback
 
 # Diagnostic check for required packages
 MISSING_PACKAGES = []
-for pkg in ["torch", "transformers", "faiss", "sentence_transformers", "pypdf", "langchain"]:
+for pkg in ["torch", "transformers", "faiss", "sentence_transformers", "pypdf"]:
     try:
         if pkg == "faiss":
             import faiss
         elif pkg == "pypdf":
             import pypdf
-        elif pkg == "langchain":
-            from langchain.text_splitter import RecursiveCharacterTextSplitter
         else:
             __import__(pkg)
-    except ImportError:
+    except ImportError as e:
+        print(f"[!] ImportError for package '{pkg}': {e}")
         MISSING_PACKAGES.append(pkg)
 
 if MISSING_PACKAGES:
@@ -29,7 +28,7 @@ if MISSING_PACKAGES:
     for pkg in MISSING_PACKAGES:
         print(f"    - {pkg}")
     print("\nPlease run the following command to install the missing dependencies:")
-    print("pip install torch transformers accelerate bitsandbytes faiss-cpu sentence-transformers pypdf langchain")
+    print("pip install torch transformers accelerate bitsandbytes faiss-cpu sentence-transformers pypdf")
     sys.exit(1)
 
 import torch
@@ -38,7 +37,53 @@ import numpy as np
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from sentence_transformers import SentenceTransformer
 from pypdf import PdfReader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+# Try importing langchain text splitter, otherwise fall back to pure-Python implementation
+try:
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+except ImportError:
+    try:
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
+    except ImportError as e:
+        print(f"[!] Warning: LangChain text splitter failed to load ({e}). Using native Python recursive splitter fallback.")
+        # Pure-Python implementation of RecursiveCharacterTextSplitter
+        class RecursiveCharacterTextSplitter:
+            def __init__(self, chunk_size=1000, chunk_overlap=200, separators=None):
+                self.chunk_size = chunk_size
+                self.chunk_overlap = chunk_overlap
+                self.separators = separators or ["\n\n", "\n", " ", ""]
+
+            def split_text(self, text):
+                chunks = []
+                def _split(t, seps):
+                    if len(t) <= self.chunk_size:
+                        return [t]
+                    if not seps:
+                        return [t[i:i+self.chunk_size] for i in range(0, len(t), self.chunk_size - self.chunk_overlap)]
+                    
+                    sep = seps[0]
+                    next_seps = seps[1:]
+                    parts = t.split(sep)
+                    current = ""
+                    res = []
+                    for part in parts:
+                        part_with_sep = part + sep if part != parts[-1] else part
+                        if len(part_with_sep) > self.chunk_size:
+                            if current:
+                                res.append(current)
+                                current = ""
+                            res.extend(_split(part_with_sep, next_seps))
+                        else:
+                            if len(current) + len(part_with_sep) <= self.chunk_size:
+                                current += part_with_sep
+                            else:
+                                if current:
+                                    res.append(current)
+                                current = part_with_sep
+                    if current:
+                        res.append(current)
+                    return res
+                return _split(text, self.separators)
 
 # Default system instruction engineered for Tunisian Arabic Digital Safety
 SYSTEM_INSTRUCTION = """أنت خبير محترف وموثوق في السلامة الرقمية والأمن السيبراني (Digital Safety Expert) لمساعدة المستخدمين التوانسة وحمايتهم من المخاطر الرقمية.
