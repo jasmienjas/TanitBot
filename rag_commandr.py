@@ -21,6 +21,7 @@ for pkg in ["torch", "transformers", "faiss", "sentence_transformers", "pypdf"]:
             __import__(pkg)
     except ImportError as e:
         print(f"[!] ImportError for package '{pkg}': {e}")
+        traceback.print_exc()
         MISSING_PACKAGES.append(pkg)
 
 if MISSING_PACKAGES:
