@@ -173,7 +173,12 @@ def build_and_save_index(rag_files_dir, index_dir, embed_model):
     # Embedding
     chunk_texts = [c["text"] for c in chunks]
     print("[+] Generating embeddings (this may take a minute)...")
-    embeddings = embed_model.encode(chunk_texts, show_progress_bar=True, normalize_embeddings=True)
+    try:
+        embeddings = embed_model.encode(chunk_texts, show_progress_bar=True, normalize_embeddings=True)
+    except Exception as e:
+        print(f"[!] Warning: Embedding generation failed on default device ({e}). Falling back to CPU...")
+        embed_model.to("cpu")
+        embeddings = embed_model.encode(chunk_texts, show_progress_bar=True, normalize_embeddings=True)
     embeddings_np = np.array(embeddings).astype('float32')
     
     # FAISS Index
@@ -223,7 +228,12 @@ def retrieve(query, index, chunks, embedding_model, top_k=4):
     """
     Retrieves top_k relevant chunks for the given query.
     """
-    query_vector = embedding_model.encode([query], normalize_embeddings=True).astype('float32')
+    try:
+        query_vector = embedding_model.encode([query], normalize_embeddings=True).astype('float32')
+    except Exception as e:
+        print(f"[!] Warning: Query embedding failed ({e}). Falling back to CPU...")
+        embedding_model.to("cpu")
+        query_vector = embedding_model.encode([query], normalize_embeddings=True).astype('float32')
     distances, indices = index.search(query_vector, top_k)
     
     results = []
@@ -483,8 +493,12 @@ def main():
 
     # Step 1: Initialize Embedding Model (used for indexing or retrieval)
     print(f"[+] Loading embedding model for RAG: {args.embedding_model}")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    embed_model = SentenceTransformer(args.embedding_model, device=device)
+    try:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        embed_model = SentenceTransformer(args.embedding_model, device=device)
+    except Exception as e:
+        print(f"[!] Warning: Failed to load embedding model on CUDA ({e}). Falling back to CPU.")
+        embed_model = SentenceTransformer(args.embedding_model, device="cpu")
 
     # Step 2: Ensure Index is Loaded or Built
     index, chunks = None, None
