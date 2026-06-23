@@ -331,7 +331,16 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         bnb_config = BitsAndBytesConfig(load_in_8bit=True)
 
     if torch.cuda.is_available():
-        device_map = {"": 0} if bnb_config is not None else "auto"
+        if bnb_config is not None and "c4ai-command-r" in model_id.lower():
+            device_map = {
+                "model.embed_tokens": "cpu",
+                "lm_head": "cpu",
+                "model.norm": 0
+            }
+            for i in range(40):
+                device_map[f"model.layers.{i}"] = 0
+        else:
+            device_map = {"": 0} if bnb_config is not None else "auto"
         torch_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
         print(f"    [Config] GPU detected. Using half-precision: {torch_dtype}")
     else:
@@ -355,6 +364,7 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         device_map=device_map,
         low_cpu_mem_usage=True,
         attn_implementation="sdpa",
+        llm_int8_enable_fp32_cpu_offload=True,  # Allow CPU offload of non-quantized FP32 modules
         token=hf_token,
         trust_remote_code=True,
         cache_dir=cache_dir
