@@ -603,6 +603,7 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
 
         # 3. Stream Response
         def generate_stream():
+            nonlocal input_ids
             # Clear cache before generation
             gc.collect()
             if torch.cuda.is_available():
@@ -645,7 +646,6 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
                 # Clean up references and clear CUDA memory after generation completes
                 # to prevent memory fragmentation and leaks on subsequent requests.
                 t.join(timeout=2.0)
-                nonlocal input_ids
                 input_ids = None
                 gc.collect()
                 if torch.cuda.is_available():
