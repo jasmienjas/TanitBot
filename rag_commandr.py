@@ -60,6 +60,7 @@ import time
 import json
 import argparse
 import traceback
+from threading import Thread
 
 # Diagnostic check for required packages
 MISSING_PACKAGES = []
@@ -99,7 +100,7 @@ if not hasattr(nn.Module, "set_submodule"):
     nn.Module.set_submodule = _set_submodule
 
 import numpy as np
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig, TextIteratorStreamer
 from sentence_transformers import SentenceTransformer
 from pypdf import PdfReader
 
@@ -513,6 +514,133 @@ def run_rag_query(query, index, chunks, embed_model, model, tokenizer, args):
     print(f"Generated {len(new_tokens)} tokens in {latency:.2f} seconds ({len(new_tokens)/latency:.2f} tok/s)\n")
 
 
+def run_server(args, model, tokenizer, embed_model, index, chunks):
+    """
+    Runs a FastAPI web server to expose the RAG generation API.
+    """
+    try:
+        from fastapi import FastAPI, Request
+        from fastapi.responses import StreamingResponse
+        from pydantic import BaseModel
+        from typing import List, Dict, Any
+        import uvicorn
+    except ImportError:
+        print("[!] Critical: FastAPI and Uvicorn are required for server mode.")
+        print("Please run: pip install fastapi uvicorn")
+        sys.exit(1)
+
+    app = FastAPI(title="TanitBot RAG API Server")
+
+    class ChatMessage(BaseModel):
+        role: str
+        content: str
+
+    class ChatRequest(BaseModel):
+        messages: List[ChatMessage]
+        lang: str = "ar"
+
+    @app.post("/api/chat")
+    async def chat_endpoint(request: ChatRequest):
+        # Find the last user query
+        user_messages = [m for m in request.messages if m.role == "user"]
+        if not user_messages:
+            query = ""
+        else:
+            query = user_messages[-1].content
+
+        print(f"[Server] Received chat query: '{query}'")
+
+        # 1. Retrieve context
+        print(f"[Server] Searching vector index (top_k={args.top_k})...")
+        retrieved_items = retrieve(query, index, chunks, embed_model, top_k=args.top_k)
+        
+        context_str = ""
+        for idx, item in enumerate(retrieved_items):
+            source = item["chunk"]["metadata"]["source"]
+            page = item["chunk"]["metadata"]["page"]
+            context_str += f"--- Document [{idx+1}]: {source} (Page {page}) ---\n{item['chunk']['text']}\n\n"
+
+        # 2. Formulate prompts
+        formatted_user_prompt = USER_PROMPT_TEMPLATE.format(context=context_str, query=query)
+        
+        # Build prompt messages array
+        messages = [
+            {"role": "system", "content": SYSTEM_INSTRUCTION},
+            {"role": "user", "content": formatted_user_prompt}
+        ]
+
+        # Format using chat template
+        try:
+            input_ids = tokenizer.apply_chat_template(
+                messages,
+                tokenize=True,
+                add_generation_prompt=True,
+                return_tensors="pt"
+            )
+        except Exception as e:
+            print(f"[Server] Tokenizer apply_chat_template failed: {e}. Falling back to raw text.")
+            raw_prompt = f"<|im_start|>system\n{SYSTEM_INSTRUCTION}<|im_end|>\n<|im_start|>user\n{formatted_user_prompt}<|im_end|>\n<|im_start|>assistant\n"
+            input_ids = tokenizer.encode(raw_prompt, return_tensors="pt")
+
+        if isinstance(input_ids, dict) or hasattr(input_ids, "keys"):
+            if "input_ids" in input_ids:
+                input_ids = input_ids["input_ids"]
+        if hasattr(input_ids, "ids"):
+            input_ids = input_ids.ids
+        if not isinstance(input_ids, torch.Tensor):
+            if isinstance(input_ids, list) and len(input_ids) > 0 and isinstance(input_ids[0], list):
+                input_ids = torch.tensor(input_ids)
+            else:
+                input_ids = torch.tensor([input_ids])
+        else:
+            input_ids = input_ids.long()
+        if input_ids.ndim == 1:
+            input_ids = input_ids.unsqueeze(0)
+
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        # Force placement onto GPU 0 for inference if available to match RoPE/model weights
+        input_ids = input_ids.to("cuda:0" if torch.cuda.is_available() else device)
+
+        # 3. Stream Response
+        def generate_stream():
+            # Clear cache before generation
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+                torch.cuda.ipc_collect()
+
+            streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
+            
+            gen_config = {
+                "inputs": input_ids,
+                "streamer": streamer,
+                "max_new_tokens": args.max_new_tokens,
+                "do_sample": args.temperature > 0.0,
+                "pad_token_id": tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id,
+                "eos_token_id": tokenizer.eos_token_id,
+            }
+            if args.temperature > 0.0:
+                gen_config["temperature"] = args.temperature
+                gen_config["top_p"] = args.top_p
+
+            # Start generation thread
+            t = Thread(target=model.generate, kwargs=gen_config)
+            t.start()
+
+            for text_chunk in streamer:
+                yield text_chunk
+
+        return StreamingResponse(generate_stream(), media_type="text/plain")
+
+    # Add health check
+    @app.get("/health")
+    def health():
+        return {"status": "healthy", "model": args.model_id}
+
+    print(f"[Server] Starting FastAPI server on {args.host}:{args.port}...")
+    uvicorn.run(app, host=args.host, port=args.port)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Tunisian Arabic Digital Safety RAG Assistant.")
     parser.add_argument(
@@ -598,6 +726,23 @@ def main():
         default="./hf_cache",
         help="HF downloads cache directory."
     )
+    parser.add_argument(
+        "--server",
+        action="store_true",
+        help="Run RAG assistant as a FastAPI web server."
+    )
+    parser.add_argument(
+        "--host",
+        type=str,
+        default="0.0.0.0",
+        help="Server host bind address."
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Server port."
+    )
     args = parser.parse_args()
 
     # Login to HF if token is present
@@ -647,9 +792,11 @@ def main():
         traceback.print_exc()
         sys.exit(1)
 
-    # Step 4: Handle query or interactive mode
+    # Step 4: Handle server, query or interactive mode
     try:
-        if args.interactive:
+        if args.server:
+            run_server(args, model, tokenizer, embed_model, index, chunks)
+        elif args.interactive:
             print("\n" + "=" * 80)
             print("         TUNISIAN ARABIC DIGITAL SAFETY ASSISTANT - INTERACTIVE CHAT")
             print("=" * 80)

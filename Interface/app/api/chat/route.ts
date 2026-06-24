@@ -97,15 +97,45 @@ To enable full AI answers, connect the RunPod endpoint (RUNPOD_ENDPOINT_URL and 
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, lang = "ar" } = (await req.json()) as {
+    const rawBody = await req.json()
+    const { messages, lang = "ar" } = rawBody as {
       messages: ChatMessage[]
       lang?: "ar" | "en"
+    }
+
+    const endpoint = process.env.RUNPOD_ENDPOINT_URL
+    const apiKey = process.env.RUNPOD_API_KEY
+
+    // If endpoint is set, forward the payload to the Python FastAPI backend
+    if (endpoint) {
+      console.log(`[Next.js] Forwarding chat request to: ${endpoint}`)
+      try {
+        const upstream = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {})
+          },
+          body: JSON.stringify({ messages, lang })
+        })
+
+        if (upstream.ok && upstream.body) {
+          return new Response(upstream.body, {
+            headers: {
+              "Content-Type": "text/plain; charset=utf-8",
+              "Cache-Control": "no-cache",
+            },
+          })
+        }
+      } catch (fetchErr) {
+        console.error("[Next.js] Failed to fetch from RunPod backend:", fetchErr)
+      }
     }
 
     const lastUser = [...messages].reverse().find((m) => m.role === "user")
     const query = lastUser?.content ?? ""
 
-    // 1) Retrieval-Augmented Generation: fetch relevant context
+    // 1) Retrieval-Augmented Generation: fetch relevant context locally
     const context = await retrieveContext(query, lang)
 
     // 2) Build the Command-R prompt
