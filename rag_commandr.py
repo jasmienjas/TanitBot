@@ -563,11 +563,25 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
         # 2. Formulate prompts
         formatted_user_prompt = USER_PROMPT_TEMPLATE.format(context=context_str, query=query)
         
-        # Build prompt messages array
-        messages = [
-            {"role": "system", "content": SYSTEM_INSTRUCTION},
-            {"role": "user", "content": formatted_user_prompt}
-        ]
+        # Build prompt messages array containing recent conversation history
+        messages = [{"role": "system", "content": SYSTEM_INSTRUCTION}]
+        
+        # Limit history to the last 8 messages (4 turns) to bound context size and prevent GPU memory spikes
+        recent_messages = request.messages[-8:] if request.messages else []
+        
+        # Append previous messages as-is
+        for msg in recent_messages[:-1]:
+            messages.append({"role": msg.role, "content": msg.content})
+            
+        # Inject the retrieved context into the last user message
+        if recent_messages:
+            last_msg = recent_messages[-1]
+            if last_msg.role == "user":
+                messages.append({"role": "user", "content": formatted_user_prompt})
+            else:
+                messages.append({"role": last_msg.role, "content": last_msg.content})
+        else:
+            messages.append({"role": "user", "content": formatted_user_prompt})
 
         # Format using chat template
         try:
