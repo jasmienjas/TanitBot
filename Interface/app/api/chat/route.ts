@@ -116,7 +116,8 @@ export async function POST(req: NextRequest) {
             "Content-Type": "application/json",
             ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {})
           },
-          body: JSON.stringify({ messages, lang })
+          body: JSON.stringify({ messages, lang }),
+          keepalive: true
         })
 
         if (upstream.ok && upstream.body) {
