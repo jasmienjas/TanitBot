@@ -472,18 +472,24 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
                     print("    [Config] Successfully removed accelerate hooks from embed_tokens and lm_head.")
                 except Exception as hook_err:
                     print(f"    [Warning] Could not remove accelerate hooks: {hook_err}")
-                model.model.embed_tokens = model.model.embed_tokens.cpu()
-                model.lm_head = model.lm_head.cpu()
+                # Cast to float32 before moving to CPU to avoid float16/bfloat16 precision loss and garbled output on CPU
+                model.model.embed_tokens = model.model.embed_tokens.to(torch.float32).cpu()
+                model.lm_head = model.lm_head.to(torch.float32).cpu()
                 
-                # Register hooks for device transfer
+                target_dtype = torch.bfloat16 if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else torch.float16
+                
+                # Register hooks for device and precision transfer
                 model.model.embed_tokens.register_forward_pre_hook(
                     lambda module, inputs: (inputs[0].to("cpu"),)
                 )
                 model.model.embed_tokens.register_forward_hook(
-                    lambda module, inputs, outputs: outputs.to("cuda:0")
+                    lambda module, inputs, outputs: outputs.to("cuda:0", dtype=target_dtype)
                 )
                 model.lm_head.register_forward_pre_hook(
-                    lambda module, inputs: (inputs[0].to("cpu"),)
+                    lambda module, inputs: (inputs[0].to("cpu", dtype=torch.float32),)
+                )
+                model.lm_head.register_forward_hook(
+                    lambda module, inputs, outputs: outputs.to("cuda:0")
                 )
                 
                 gc.collect()
@@ -548,8 +554,8 @@ def run_rag_query(query, index, chunks, embed_model, model, tokenizer, args):
             return_tensors="pt"
         )
     except Exception as e:
-        print(f"[!] Warning: Tokenizer chat template failed: {e}. Falling back to formatted string.")
-        raw_prompt = f"<|im_start|>system\n{SYSTEM_INSTRUCTION}<|im_end|>\n<|im_start|>user\n{formatted_user_prompt}<|im_end|>\n<|im_start|>assistant\n"
+        print(f"[!] Warning: Tokenizer chat template failed: {e}. Falling back to Cohere formatted string.")
+        raw_prompt = f"<|START_OF_TURN_TOKEN|><|SYSTEM_TOKEN|>{SYSTEM_INSTRUCTION}<|END_OF_TURN_TOKEN|><|START_OF_TURN_TOKEN|><|USER_TOKEN|>{formatted_user_prompt}<|END_OF_TURN_TOKEN|><|START_OF_TURN_TOKEN|><|CHATBOT_TOKEN|>"
         input_ids = tokenizer.encode(raw_prompt, return_tensors="pt")
 
     # Coerce input to proper device-placed PyTorch tensor
@@ -688,8 +694,13 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
                 return_tensors="pt"
             )
         except Exception as e:
-            print(f"[Server] Tokenizer apply_chat_template failed: {e}. Falling back to raw text.")
-            raw_prompt = f"<|im_start|>system\n{SYSTEM_INSTRUCTION}<|im_end|>\n<|im_start|>user\n{formatted_user_prompt}<|im_end|>\n<|im_start|>assistant\n"
+            print(f"[Server] Tokenizer apply_chat_template failed: {e}. Falling back to Cohere formatted text.")
+            # Build conversation history in raw Cohere format
+            raw_prompt = f"<|START_OF_TURN_TOKEN|><|SYSTEM_TOKEN|>{SYSTEM_INSTRUCTION}<|END_OF_TURN_TOKEN|>"
+            for msg in recent_messages[:-1]:
+                role_token = "USER_TOKEN" if msg.role == "user" else "CHATBOT_TOKEN"
+                raw_prompt += f"<|START_OF_TURN_TOKEN|><|{role_token}|>{msg.content}<|END_OF_TURN_TOKEN|>"
+            raw_prompt += f"<|START_OF_TURN_TOKEN|><|USER_TOKEN|>{formatted_user_prompt}<|END_OF_TURN_TOKEN|><|START_OF_TURN_TOKEN|><|CHATBOT_TOKEN|>"
             input_ids = tokenizer.encode(raw_prompt, return_tensors="pt")
 
         if isinstance(input_ids, dict) or hasattr(input_ids, "keys"):
