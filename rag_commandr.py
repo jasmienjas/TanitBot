@@ -473,7 +473,10 @@ def run_rag_query(query, index, chunks, embed_model, model, tokenizer, args):
         input_ids = input_ids.unsqueeze(0)
         
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    input_ids = input_ids.to(model.device if hasattr(model, "device") else device)
+    # Even if model.device returns CPU (due to CPU offloaded embeddings),
+    # the main model inputs must be on the GPU to ensure that internal generation tensors
+    # (such as position_ids and attention_mask) are created on the GPU, matching the decoder layers.
+    input_ids = input_ids.to("cuda:0" if torch.cuda.is_available() else device)
 
     # 3. Generate
     gen_config = {
