@@ -421,6 +421,15 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
                 torch.cuda.empty_cache()
                 torch.cuda.ipc_collect()
     
+    # Shadow the device property on the model class to return cuda:0.
+    # Since embed_tokens is on CPU, model.device would normally return CPU,
+    # causing transformers to warn and run unoptimized CPU-GPU pathways.
+    if torch.cuda.is_available():
+        try:
+            type(model).device = property(lambda self: torch.device("cuda:0"))
+        except Exception:
+            pass
+
     return model, tokenizer
 
 
