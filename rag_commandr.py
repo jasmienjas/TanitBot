@@ -454,7 +454,7 @@ def run_rag_query(query, index, chunks, embed_model, model, tokenizer, args):
         page = item["chunk"]["metadata"]["page"]
         score = item["score"]
         print(f"    {idx+1}. [{source}] Page {page} (Similarity Score: {score:.4f})")
-        context_str += f"--- Document [{idx+1}]: {clean_source} (Page {page}) ---\n{item['chunk']['text']}\n\n"
+        context_str += f"[المصدر: {clean_source}، صفحة {page}]\n{item['chunk']['text']}\n\n"
         
     # 2. Formulate RAG Prompts
     formatted_user_prompt = USER_PROMPT_TEMPLATE.format(context=context_str, query=query)
@@ -578,7 +578,7 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
             source = item["chunk"]["metadata"]["source"]
             clean_source = get_clean_source_name(source)
             page = item["chunk"]["metadata"]["page"]
-            context_str += f"--- Document [{idx+1}]: {clean_source} (Page {page}) ---\n{item['chunk']['text']}\n\n"
+            context_str += f"[المصدر: {clean_source}، صفحة {page}]\n{item['chunk']['text']}\n\n"
 
         # 2. Formulate prompts
         formatted_user_prompt = USER_PROMPT_TEMPLATE.format(context=context_str, query=query)
@@ -761,7 +761,7 @@ def main():
     parser.add_argument(
         "--max-new-tokens",
         type=int,
-        default=512,
+        default=1024,
         help="Maximum generated new tokens."
     )
     parser.add_argument(
