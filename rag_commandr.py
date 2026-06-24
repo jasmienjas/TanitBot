@@ -324,7 +324,7 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         bnb_config = BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_quant_type="nf4",
-            bnb_4bit_use_double_quant=False,
+            bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=torch.bfloat16 if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else torch.float16,
             llm_int8_enable_fp32_cpu_offload=True
         )
@@ -385,6 +385,14 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         if is_large_model:
             if hasattr(model, "model") and hasattr(model.model, "embed_tokens") and hasattr(model, "lm_head"):
                 print("    [Config] Moving embed_tokens and lm_head to CPU manually...")
+                # Remove accelerate's automatic device-alignment hooks so they don't interfere with our manual CPU placement
+                try:
+                    from accelerate.hooks import remove_hook_from_module
+                    remove_hook_from_module(model.model.embed_tokens)
+                    remove_hook_from_module(model.lm_head)
+                    print("    [Config] Successfully removed accelerate hooks from embed_tokens and lm_head.")
+                except Exception as hook_err:
+                    print(f"    [Warning] Could not remove accelerate hooks: {hook_err}")
                 model.model.embed_tokens = model.model.embed_tokens.cpu()
                 model.lm_head = model.lm_head.cpu()
                 
