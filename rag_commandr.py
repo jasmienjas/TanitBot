@@ -708,7 +708,15 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
                     torch.cuda.empty_cache()
                     torch.cuda.ipc_collect()
 
-        return StreamingResponse(generate_stream(), media_type="text/plain")
+        return StreamingResponse(
+            generate_stream(),
+            media_type="text/plain",
+            headers={
+                "Cache-Control": "no-cache, no-transform",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            }
+        )
 
     # Add health check
     @app.get("/health")
