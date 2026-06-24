@@ -219,8 +219,8 @@ def build_and_save_index(rag_files_dir, index_dir, embed_model):
     # Chunking
     print("[+] Chunking text using RecursiveCharacterTextSplitter...")
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200,
+        chunk_size=600,
+        chunk_overlap=120,
         separators=["\n\n", "\n", " ", ""]
     )
     
@@ -331,7 +331,22 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         bnb_config = BitsAndBytesConfig(load_in_8bit=True)
 
     if torch.cuda.is_available():
-        device_map = {"": 0} if bnb_config is not None else "auto"
+        if bnb_config is not None:
+            is_large_model = "command-r" in model_id.lower() or "cohere" in model_id.lower() or "c4ai" in model_id.lower()
+            if is_large_model:
+                print("    [Config] Large model detected. Using custom device_map to offload embed_tokens/lm_head to CPU...")
+                device_map = {
+                    "model.embed_tokens": "cpu",
+                    "model.layers": 0,
+                    "model.norm": 0,
+                    "model.rotary_emb": 0,
+                    "lm_head": "cpu"
+                }
+            else:
+                device_map = {"": 0}
+        else:
+            device_map = "auto"
+        
         if bnb_config is not None:
             torch_dtype = None  # bitsandbytes manages precision internally
         else:
@@ -447,6 +462,12 @@ def run_rag_query(query, index, chunks, embed_model, model, tokenizer, args):
         gen_config["temperature"] = args.temperature
         gen_config["top_p"] = args.top_p
 
+    print("[+] Clearing GPU cache and running garbage collection...")
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        torch.cuda.ipc_collect()
+
     print("[+] Generating response from Command R...")
     start_time = time.time()
     with torch.no_grad():
@@ -535,7 +556,7 @@ def main():
     parser.add_argument(
         "--top-k",
         type=int,
-        default=3,
+        default=2,
         help="Number of retrieved text chunks to feed to the model."
     )
     parser.add_argument(
