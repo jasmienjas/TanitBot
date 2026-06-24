@@ -277,6 +277,48 @@ def build_and_save_index(rag_files_dir, index_dir, embed_model):
     return index, chunks
 
 
+def is_index_up_to_date(rag_files_dir, index_dir):
+    """
+    Checks if index files exist and are fully synchronized with the PDF files
+    in the RAG directory. Returns True if up to date, False otherwise.
+    """
+    index_file = os.path.join(index_dir, "faiss_index.bin")
+    meta_file = os.path.join(index_dir, "chunks_metadata.json")
+    
+    if not os.path.exists(index_file) or not os.path.exists(meta_file):
+        print("[!] Index files are missing.")
+        return False
+        
+    if not os.path.exists(rag_files_dir):
+        print(f"[!] RAG directory '{rag_files_dir}' does not exist.")
+        return True # Nothing to index anyway
+        
+    pdf_files = glob.glob(os.path.join(rag_files_dir, "*.pdf"))
+    pdf_filenames = {os.path.basename(f) for f in pdf_files}
+    
+    try:
+        with open(meta_file, "r", encoding="utf-8") as f:
+            chunks = json.load(f)
+        indexed_files = {c.get("metadata", {}).get("source") for c in chunks if "metadata" in c}
+        indexed_files = {f for f in indexed_files if f}
+    except Exception as e:
+        print(f"[!] Failed to read index metadata: {e}")
+        return False
+        
+    if pdf_filenames != indexed_files:
+        print(f"[!] Index mismatch: PDFs in folder ({pdf_filenames}) vs indexed PDFs ({indexed_files})")
+        return False
+        
+    # Check if any PDF file was modified after index was created
+    index_mtime = os.path.getmtime(index_file)
+    for pdf_path in pdf_files:
+        if os.path.getmtime(pdf_path) > index_mtime:
+            print(f"[!] PDF modified since last index build: {os.path.basename(pdf_path)}")
+            return False
+            
+    return True
+
+
 def load_index(index_dir):
     """
     Loads FAISS index and chunks metadata from disk.
@@ -735,6 +777,19 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
     def health():
         return {"status": "healthy", "model": args.model_id}
 
+    # Add index info diagnostics
+    @app.get("/index-info")
+    @app.get("/api/index-info")
+    def get_index_info():
+        file_counts = {}
+        for chunk in chunks:
+            src = chunk.get("metadata", {}).get("source", "unknown")
+            file_counts[src] = file_counts.get(src, 0) + 1
+        return {
+            "total_chunks": len(chunks),
+            "files": file_counts
+        }
+
     print(f"[Server] Starting FastAPI server on {args.host}:{args.port}...")
     uvicorn.run(app, host=args.host, port=args.port)
 
@@ -809,7 +864,7 @@ def main():
     parser.add_argument(
         "--top-k",
         type=int,
-        default=2,
+        default=4,
         help="Number of retrieved text chunks to feed to the model."
     )
     parser.add_argument(
@@ -858,14 +913,19 @@ def main():
 
     # Step 2: Ensure Index is Loaded or Built
     index, chunks = None, None
-    if not args.build_index:
-        index, chunks = load_index(args.index_dir)
-        if index is not None:
-            print(f"[✓] Vector index loaded successfully from {args.index_dir}.")
+    should_build = args.build_index
+    if not should_build:
+        if is_index_up_to_date(args.rag_files_dir, args.index_dir):
+            index, chunks = load_index(args.index_dir)
+            if index is not None:
+                print(f"[✓] Vector index loaded successfully from {args.index_dir}.")
+            else:
+                should_build = True
         else:
-            print("[!] Vector index files not found. Initiating index build.")
+            print("[!] Vector index is missing, out-of-date, or mismatched. Automatically rebuilding index...")
+            should_build = True
             
-    if index is None or args.build_index:
+    if should_build:
         index, chunks = build_and_save_index(args.rag_files_dir, args.index_dir, embed_model)
         if index is None:
             print("[!] Critical: Failed to load or build vector index. Exiting.")
