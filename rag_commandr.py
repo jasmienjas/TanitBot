@@ -334,18 +334,14 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
             llm_int8_enable_fp32_cpu_offload=True
         )
 
-    max_memory = None
     if torch.cuda.is_available():
         if bnb_config is not None:
             is_large_model = "command-r" in model_id.lower() or "cohere" in model_id.lower() or "c4ai" in model_id.lower()
             if is_large_model:
-                # To prevent CUDA OOM on a 24GB GPU, we use device_map="auto" with a max_memory limit on the GPU.
-                # Capping GPU 0 VRAM allocation at 18GB forces the large unquantized layers (like embed_tokens and lm_head, ~8.3GB total)
-                # to be offloaded to the CPU, while keeping all transformer layers on the GPU.
-                # Since accelerate auto-allocates all layers and buffers, this prevents any "meta" device leaks.
-                print("    [Config] Large model detected. Using device_map='auto' with max_memory limit to offload embeddings/LM-head to CPU...")
-                device_map = "auto"
-                max_memory = {0: "18GiB", "cpu": "64GiB"}
+                # We load the entire model on GPU 0 to avoid bitsandbytes CPU-offload bugs, 
+                # and then manually move the large embedding and LM-head layers to the CPU.
+                print("    [Config] Large model detected. Loading on GPU 0 and applying manual CPU offloading...")
+                device_map = {"": 0}
             else:
                 device_map = {"": 0}
         else:
@@ -355,7 +351,7 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
             torch_dtype = None  # bitsandbytes manages precision internally
         else:
             torch_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
-        print(f"    [Config] GPU detected. Using device_map: {device_map}, max_memory: {max_memory}, torch_dtype: {torch_dtype}")
+        print(f"    [Config] GPU detected. Using device_map: {device_map}, torch_dtype: {torch_dtype}")
     else:
         device_map = None
         torch_dtype = torch.float32
@@ -375,13 +371,36 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         quantization_config=bnb_config,
         torch_dtype=torch_dtype,
         device_map=device_map,
-        max_memory=max_memory,
         low_cpu_mem_usage=True,
         attn_implementation="sdpa",
         token=hf_token,
         trust_remote_code=True,
         cache_dir=cache_dir
     )
+
+    # Apply manual CPU offload to save VRAM and avoid meta-tensor/offload bugs
+    if torch.cuda.is_available() and bnb_config is not None:
+        is_large_model = "command-r" in model_id.lower() or "cohere" in model_id.lower() or "c4ai" in model_id.lower()
+        if is_large_model:
+            if hasattr(model, "model") and hasattr(model.model, "embed_tokens") and hasattr(model, "lm_head"):
+                print("    [Config] Moving embed_tokens and lm_head to CPU manually...")
+                model.model.embed_tokens = model.model.embed_tokens.cpu()
+                model.lm_head = model.lm_head.cpu()
+                
+                # Register hooks for device transfer
+                model.model.embed_tokens.register_forward_pre_hook(
+                    lambda module, inputs: (inputs[0].to("cpu"),)
+                )
+                model.model.embed_tokens.register_forward_hook(
+                    lambda module, inputs, outputs: outputs.to("cuda:0")
+                )
+                model.lm_head.register_forward_pre_hook(
+                    lambda module, inputs: (inputs[0].to("cpu"),)
+                )
+                
+                gc.collect()
+                torch.cuda.empty_cache()
+                torch.cuda.ipc_collect()
     
     return model, tokenizer
 
