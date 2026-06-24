@@ -307,7 +307,8 @@ def get_clean_source_name(filename):
         "EU-WP2016 2-3 1 Cyber Hygiene.pdf": "European Union Agency for Network and Information Security [ENISA].Review of cyber hygiene practices (2016)",
         "MENA-PSS-Manual-English.pdf": "The Community Hub. (2022, September). Psychosocial support for women survivors of cyberviolence: A manual for service providers responding to digital gender-based violence. SecDev Foundation",
         "Tunisia-DVAW-2021-legal-dimensions-AR.pdf": "منصري، أنوار. (2021). واقع النصوص القانونية والتعاطي القانوني والمؤسساتي مع العنف الرقمي ضدّ النساء في تونس. منشورات الكريديف.",
-        "Tunisia-DVAW-2021-women-in-journalism-AR.pdf": "الحاج قاسم، هدى. (2021، ديسمبر). دراسة حالة: الجمهور والعنف الرقمي ضدّ الصحفيات التونسيات. مؤسسة سيكديف/الكريديف"
+        "Tunisia-DVAW-2021-women-in-journalism-AR.pdf": "الحاج قاسم، هدى. (2021، ديسمبر). دراسة حالة: الجمهور والعنف الرقمي ضدّ الصحفيات التونسيات. مؤسسة سيكديف/الكريديف",
+        "MENA-Tunisia-DVAW-2022-CREDIF-Review-Issue53-ARFR.pdf":"ركز البحوث والدراسات والتوثيق والإعلام حول المرأة. (2022، جانفي). العنف الرقمي ضد النساء والفتيات. مجلة الكريديف، العدد 53."
     }
     return mapping.get(filename, filename.replace(".pdf", "").replace("-", " ").replace("_", " "))
 
