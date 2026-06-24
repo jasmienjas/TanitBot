@@ -623,12 +623,34 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
                 gen_config["temperature"] = args.temperature
                 gen_config["top_p"] = args.top_p
 
+            # PyTorch's gradient tracking context is thread-local. Spawning a new thread
+            # runs without the main thread's torch.no_grad() context, building a computation
+            # graph and leaking GPU memory. We wrap the generation explicitly in torch.no_grad().
+            def thread_target():
+                with torch.no_grad():
+                    try:
+                        model.generate(**gen_config)
+                    except Exception as thread_err:
+                        print(f"[Server Thread Error] Exception during generation: {thread_err}")
+                        traceback.print_exc()
+
             # Start generation thread
-            t = Thread(target=model.generate, kwargs=gen_config)
+            t = Thread(target=thread_target)
             t.start()
 
-            for text_chunk in streamer:
-                yield text_chunk
+            try:
+                for text_chunk in streamer:
+                    yield text_chunk
+            finally:
+                # Clean up references and clear CUDA memory after generation completes
+                # to prevent memory fragmentation and leaks on subsequent requests.
+                t.join(timeout=2.0)
+                nonlocal input_ids
+                input_ids = None
+                gc.collect()
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+                    torch.cuda.ipc_collect()
 
         return StreamingResponse(generate_stream(), media_type="text/plain")
 
