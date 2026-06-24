@@ -644,6 +644,18 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
                 torch.cuda.empty_cache()
                 torch.cuda.ipc_collect()
 
+            from transformers import StoppingCriteria, StoppingCriteriaList
+            import threading
+
+            class AbortStoppingCriteria(StoppingCriteria):
+                def __init__(self, stop_flag):
+                    self.stop_flag = stop_flag
+                def __call__(self, input_ids, scores, **kwargs):
+                    return self.stop_flag.is_set()
+
+            stop_event = threading.Event()
+            stopping_criteria = StoppingCriteriaList([AbortStoppingCriteria(stop_event)])
+
             streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
             
             gen_config = {
@@ -653,6 +665,7 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
                 "do_sample": args.temperature > 0.0,
                 "pad_token_id": tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id,
                 "eos_token_id": tokenizer.eos_token_id,
+                "stopping_criteria": stopping_criteria,
             }
             if args.temperature > 0.0:
                 gen_config["temperature"] = args.temperature
@@ -679,6 +692,7 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
             finally:
                 # Clean up references and clear CUDA memory after generation completes
                 # to prevent memory fragmentation and leaks on subsequent requests.
+                stop_event.set()
                 t.join(timeout=2.0)
                 input_ids = None
                 gc.collect()
