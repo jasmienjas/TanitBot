@@ -289,6 +289,19 @@ def load_index(index_dir):
         
     return index, chunks
 
+def get_clean_source_name(filename):
+    """
+    Maps raw PDF filenames to professional, human-readable document titles.
+    """
+    mapping = {
+        "Digital-Safety-Guide-JOSA-FB-Arabic.pdf": "Jordan Open Source Association & Facebook. دليل السلامة الرقمية",
+        "Digital-Safety-Toolkit-Nevada.pdf": "Nevada Coalition to End Domestic and Sexual Violence. Digital safety toolkit: Practical tools to prevent and mitigate technology facilitated abuse. NCEDSV.",
+        "Digital-Security-Arabic.pdf": "Unrepresented Nations and Peoples Organization. تدريب الأمن السيبراني الرقمي [Digital cybersecurity training]. UNPO Academy.",
+        "EU-WP2016 2-3 1 Cyber Hygiene.pdf": "European Union Agency for Network and Information Security [ENISA].Review of cyber hygiene practices (2016)",
+        "MENA-PSS-Manual-English.pdf": "The Community Hub. (2022, September). Psychosocial support for women survivors of cyberviolence: A manual for service providers responding to digital gender-based violence. SecDev Foundation"
+    }
+    return mapping.get(filename, filename.replace(".pdf", "").replace("-", " ").replace("_", " "))
+
 
 def retrieve(query, index, chunks, embedding_model, top_k=4):
     """
@@ -440,10 +453,11 @@ def run_rag_query(query, index, chunks, embed_model, model, tokenizer, args):
     context_str = ""
     for idx, item in enumerate(retrieved_items):
         source = item["chunk"]["metadata"]["source"]
+        clean_source = get_clean_source_name(source)
         page = item["chunk"]["metadata"]["page"]
         score = item["score"]
         print(f"    {idx+1}. [{source}] Page {page} (Similarity Score: {score:.4f})")
-        context_str += f"--- Document [{idx+1}]: {source} (Page {page}) ---\n{item['chunk']['text']}\n\n"
+        context_str += f"--- Document [{idx+1}]: {clean_source} (Page {page}) ---\n{item['chunk']['text']}\n\n"
         
     # 2. Formulate RAG Prompts
     formatted_user_prompt = USER_PROMPT_TEMPLATE.format(context=context_str, query=query)
@@ -565,8 +579,9 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
         context_str = ""
         for idx, item in enumerate(retrieved_items):
             source = item["chunk"]["metadata"]["source"]
+            clean_source = get_clean_source_name(source)
             page = item["chunk"]["metadata"]["page"]
-            context_str += f"--- Document [{idx+1}]: {source} (Page {page}) ---\n{item['chunk']['text']}\n\n"
+            context_str += f"--- Document [{idx+1}]: {clean_source} (Page {page}) ---\n{item['chunk']['text']}\n\n"
 
         # 2. Formulate prompts
         formatted_user_prompt = USER_PROMPT_TEMPLATE.format(context=context_str, query=query)
