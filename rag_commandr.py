@@ -472,9 +472,9 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
                     print("    [Config] Successfully removed accelerate hooks from embed_tokens and lm_head.")
                 except Exception as hook_err:
                     print(f"    [Warning] Could not remove accelerate hooks: {hook_err}")
-                # Cast to float32 before moving to CPU to avoid float16/bfloat16 precision loss and garbled output on CPU
-                model.model.embed_tokens = model.model.embed_tokens.to(torch.float32).cpu()
-                model.lm_head = model.lm_head.to(torch.float32).cpu()
+                # Move to CPU first, then cast to float32 on CPU to avoid GPU allocation OOM
+                model.model.embed_tokens = model.model.embed_tokens.cpu().to(torch.float32)
+                model.lm_head = model.lm_head.cpu().to(torch.float32)
                 
                 target_dtype = torch.bfloat16 if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else torch.float16
                 
