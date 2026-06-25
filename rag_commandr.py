@@ -417,12 +417,9 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         if bnb_config is not None:
             is_large_model = "command-r" in model_id.lower() or "cohere" in model_id.lower() or "c4ai" in model_id.lower()
             if is_large_model:
-                # Map embed_tokens to cpu via device_map, and keep lm_head on GPU for fast generation.
-                print("    [Config] Large model detected. Offloading embed_tokens to CPU via device_map...")
-                device_map = {
-                    "model.embed_tokens": "cpu",
-                    "": 0
-                }
+                # Load the entire model on GPU 0 first, and manually offload embed_tokens and lm_head to CPU
+                print("    [Config] Large model detected. Loading on GPU 0 and applying manual CPU offloading...")
+                device_map = {"": 0}
             else:
                 device_map = {"": 0}
         else:
@@ -459,11 +456,44 @@ def load_generation_model(model_id, quantization=0, hf_token=None, cache_dir=Non
         cache_dir=cache_dir
     )
 
-    # Free VRAM fragmentation
+    # Apply manual CPU offload to save VRAM and avoid meta-tensor/offload bugs
     if torch.cuda.is_available() and bnb_config is not None:
-        gc.collect()
-        torch.cuda.empty_cache()
-        torch.cuda.ipc_collect()
+        is_large_model = "command-r" in model_id.lower() or "cohere" in model_id.lower() or "c4ai" in model_id.lower()
+        if is_large_model:
+            if hasattr(model, "model") and hasattr(model.model, "embed_tokens") and hasattr(model, "lm_head"):
+                print("    [Config] Moving embed_tokens and lm_head to CPU manually to prevent OOM...")
+                # Remove accelerate's automatic device-alignment hooks so they don't interfere with our manual CPU placement
+                try:
+                    from accelerate.hooks import remove_hook_from_module
+                    remove_hook_from_module(model.model.embed_tokens)
+                    remove_hook_from_module(model.lm_head)
+                    print("    [Config] Successfully removed accelerate hooks from embed_tokens and lm_head.")
+                except Exception as hook_err:
+                    print(f"    [Warning] Could not remove accelerate hooks: {hook_err}")
+                
+                target_dtype = torch.bfloat16 if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else torch.float16
+                
+                # Move to CPU first, then cast to target_dtype on CPU to avoid GPU allocation OOM
+                model.model.embed_tokens = model.model.embed_tokens.cpu().to(target_dtype)
+                model.lm_head = model.lm_head.cpu().to(target_dtype)
+                
+                # Register hooks for device and precision transfer
+                model.model.embed_tokens.register_forward_pre_hook(
+                    lambda module, inputs: (inputs[0].to("cpu"),)
+                )
+                model.model.embed_tokens.register_forward_hook(
+                    lambda module, inputs, outputs: outputs.to("cuda:0", dtype=target_dtype)
+                )
+                model.lm_head.register_forward_pre_hook(
+                    lambda module, inputs: (inputs[0].to("cpu", dtype=target_dtype),)
+                )
+                model.lm_head.register_forward_hook(
+                    lambda module, inputs, outputs: outputs.to("cuda:0", dtype=target_dtype)
+                )
+                
+                gc.collect()
+                torch.cuda.empty_cache()
+                torch.cuda.ipc_collect()
     
  
     if torch.cuda.is_available():
