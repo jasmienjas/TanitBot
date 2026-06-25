@@ -774,8 +774,10 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
 
             try:
                 for text_chunk in streamer:
+                    print(text_chunk, end="", flush=True)
                     yield text_chunk
             finally:
+                print("\n[Server Stream] Generation finished or connection closed.")
                 # Clean up references and clear CUDA memory after generation completes
                 # to prevent memory fragmentation and leaks on subsequent requests.
                 stop_event.set()
@@ -799,6 +801,12 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
     # Add health check
     @app.get("/health")
     def health():
+        return {"status": "healthy", "model": args.model_id}
+
+    # Add API status endpoint to handle external proxy/orchestrator health checks
+    @app.get("/api/status")
+    @app.get("/status")
+    def api_status(token: str = None):
         return {"status": "healthy", "model": args.model_id}
 
     # Add index info diagnostics
