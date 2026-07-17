@@ -13,8 +13,14 @@ import {
 } from "lucide-react"
 import { t, type Lang, type Topic } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
+import { FeedbackPrompt } from "@/components/feedback"
 
 type Message = { id: string; role: "user" | "assistant"; content: string }
+
+const ERROR_TEXT: Record<Lang, string> = {
+  ar: "صار خطأ، عاود من فضلك.",
+  en: "Something went wrong. Please try again.",
+}
 
 const topicIcons = {
   shield: Shield,
@@ -75,7 +81,7 @@ export function ChatInterface({ lang }: { lang: Lang }) {
       setMessages((prev) =>
         prev.map((m) =>
           m.id === assistantId
-            ? { ...m, content: lang === "ar" ? "صار خطأ، عاود من فضلك." : "Something went wrong. Please try again." }
+            ? { ...m, content: ERROR_TEXT[lang] }
             : m,
         ),
       )
@@ -86,6 +92,12 @@ export function ChatInterface({ lang }: { lang: Lang }) {
   }
 
   const hasMessages = messages.length > 0
+  const lastMsg = messages[messages.length - 1]
+  const showFeedback =
+    !isStreaming &&
+    lastMsg?.role === "assistant" &&
+    !!lastMsg.content &&
+    lastMsg.content !== ERROR_TEXT[lang]
 
   return (
     <div className="flex h-[640px] max-h-[80vh] flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
@@ -156,6 +168,14 @@ export function ChatInterface({ lang }: { lang: Lang }) {
             {m.content || (isStreaming ? <TypingDots /> : "")}
           </Bubble>
         ))}
+
+        {showFeedback && (
+          <FeedbackPrompt
+            key={lastMsg.id}
+            lang={lang}
+            qa={`Q: ${messages[messages.length - 2]?.content ?? ""}\nA: ${lastMsg.content}`}
+          />
+        )}
       </div>
 
       {/* Composer */}
