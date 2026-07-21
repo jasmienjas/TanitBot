@@ -26,10 +26,31 @@ const topicIcons = {
 export function ChatInterface({ lang }: { lang: Lang }) {
   const d = t[lang]
   const [messages, setMessages] = useState<Message[]>([])
+  const [hasLoaded, setHasLoaded] = useState(false)
   const [input, setInput] = useState("")
   const [isStreaming, setIsStreaming] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  // Load chat history from sessionStorage on mount to avoid hydration mismatch
+  useEffect(() => {
+    const saved = sessionStorage.getItem("tanitbot_chat_history")
+    if (saved) {
+      try {
+        setMessages(JSON.parse(saved))
+      } catch (e) {
+        console.error("Failed to parse chat history from sessionStorage", e)
+      }
+    }
+    setHasLoaded(true)
+  }, [])
+
+  // Save chat history to sessionStorage whenever it changes
+  useEffect(() => {
+    if (hasLoaded) {
+      sessionStorage.setItem("tanitbot_chat_history", JSON.stringify(messages))
+    }
+  }, [messages, hasLoaded])
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" })
@@ -105,7 +126,10 @@ export function ChatInterface({ lang }: { lang: Lang }) {
         </div>
         {hasMessages && (
           <button
-            onClick={() => setMessages([])}
+            onClick={() => {
+              setMessages([])
+              sessionStorage.removeItem("tanitbot_chat_history")
+            }}
             className="flex items-center gap-1.5 rounded-full bg-primary-foreground/15 px-3 py-1.5 text-xs font-medium transition hover:bg-primary-foreground/25"
           >
             <RotateCcw className="h-3.5 w-3.5" />

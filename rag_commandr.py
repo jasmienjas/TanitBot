@@ -651,9 +651,92 @@ def run_server(args, model, tokenizer, embed_model, index, chunks):
 
         print(f"[Server] Received chat query: '{query}'")
 
+        # In-memory query condensation for better RAG retrieval on follow-ups
+        condensed_query = query
+        if len(request.messages) > 1 and query:
+            try:
+                print("[Server] History detected. Attempting to condense user query for RAG search...")
+                
+                # Instruction for the model to rewrite the query based on conversation history
+                REWRITE_SYSTEM_PROMPT = (
+                    "You are an AI assistant that reformulates user search queries.\n"
+                    "Given a conversation history and a follow-up question, rewrite the follow-up question "
+                    "into a single, standalone search query in the user's language (Tunisian Arabic or English) "
+                    "that includes all necessary context.\n"
+                    "DO NOT answer the question. Only output the rewritten search query and nothing else.\n"
+                    "If the last question is already standalone and does not need any context, return it exactly as it is.\n\n"
+                    "Examples:\n"
+                    "1. History:\n"
+                    "User: كيفاش نحمي تلفوني؟\n"
+                    "Assistant: لازم تستعمل كلمة سر قوية وتفعل التحقق بخطوتين.\n"
+                    "User: كيفاش نفعلها؟\n"
+                    "Standalone Query: كيفاش نفعل خاصية التحقق بخطوتين على تلفوني\n\n"
+                    "2. History:\n"
+                    "User: What is phishing?\n"
+                    "Assistant: It is a way hackers steal your data.\n"
+                    "User: how do I avoid it?\n"
+                    "Standalone Query: How to avoid email phishing and social engineering attacks"
+                )
+                
+                # We build the conversation history context (limiting to the last 3 messages to keep it fast)
+                rewrite_messages = [{"role": "system", "content": REWRITE_SYSTEM_PROMPT}]
+                for msg in request.messages[-3:]:
+                    rewrite_messages.append({"role": msg.role, "content": msg.content})
+                
+                # Tokenize the prompt
+                try:
+                    rewrite_input_ids = tokenizer.apply_chat_template(
+                        rewrite_messages,
+                        tokenize=True,
+                        add_generation_prompt=True,
+                        return_tensors="pt"
+                    )
+                except Exception as template_err:
+                    # Fallback raw Cohere formatting if template fails
+                    raw_rewrite_prompt = f"<|START_OF_TURN_TOKEN|><|SYSTEM_TOKEN|>{REWRITE_SYSTEM_PROMPT}<|END_OF_TURN_TOKEN|>"
+                    for msg in request.messages[-3:]:
+                        role_token = "USER_TOKEN" if msg.role == "user" else "CHATBOT_TOKEN"
+                        raw_rewrite_prompt += f"<|START_OF_TURN_TOKEN|><|{role_token}|>{msg.content}<|END_OF_TURN_TOKEN|>"
+                    raw_rewrite_prompt += "<|START_OF_TURN_TOKEN|><|CHATBOT_TOKEN|>"
+                    rewrite_input_ids = tokenizer.encode(raw_rewrite_prompt, return_tensors="pt")
+                
+                # Ensure input_ids shape and type are correct, and move to CUDA if available
+                if isinstance(rewrite_input_ids, dict) or hasattr(rewrite_input_ids, "keys"):
+                    if "input_ids" in rewrite_input_ids:
+                        rewrite_input_ids = rewrite_input_ids["input_ids"]
+                if not isinstance(rewrite_input_ids, torch.Tensor):
+                    rewrite_input_ids = torch.tensor(rewrite_input_ids)
+                rewrite_input_ids = rewrite_input_ids.long()
+                if rewrite_input_ids.ndim == 1:
+                    rewrite_input_ids = rewrite_input_ids.unsqueeze(0)
+                
+                device = "cuda" if torch.cuda.is_available() else "cpu"
+                rewrite_input_ids = rewrite_input_ids.to("cuda:0" if torch.cuda.is_available() else device)
+                
+                # Generate rewritten query using greedy decoding for speed & determinism
+                with torch.no_grad():
+                    output_tokens = model.generate(
+                        inputs=rewrite_input_ids,
+                        max_new_tokens=40,
+                        do_sample=False,
+                        pad_token_id=tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id,
+                        eos_token_id=tokenizer.eos_token_id
+                    )
+                
+                input_len = rewrite_input_ids.shape[1]
+                new_tokens = output_tokens[0][input_len:]
+                generated_query = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+                
+                if generated_query:
+                    condensed_query = generated_query
+                    print(f"[Server RAG] Condensed Query: '{query}' -> '{condensed_query}'")
+                
+            except Exception as rewrite_err:
+                print(f"[Server RAG Warning] Query condensation failed: {rewrite_err}. Using original query.")
+
         # 1. Retrieve context
-        print(f"[Server] Searching vector index (top_k={args.top_k})...")
-        retrieved_items = retrieve(query, index, chunks, embed_model, top_k=args.top_k)
+        print(f"[Server] Searching vector index (top_k={args.top_k}) for: '{condensed_query}'...")
+        retrieved_items = retrieve(condensed_query, index, chunks, embed_model, top_k=args.top_k)
         
         context_str = ""
         for idx, item in enumerate(retrieved_items):
