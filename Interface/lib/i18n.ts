@@ -32,6 +32,19 @@ type Dict = {
   newChat: string
   thinking: string
   langLabel: string
+  feedback: {
+    rateLabel: string
+    title: string
+    q1: string
+    q2: string
+    yes: string
+    no: string
+    commentPlaceholder: string
+    includeQa: string
+    submit: string
+    skip: string
+    thanks: string
+  }
 }
 
 export const t: Record<Lang, Dict> = {
@@ -91,6 +104,19 @@ export const t: Record<Lang, Dict> = {
     newChat: "محادثة جديدة",
     thinking: "تانيت بوت يكتب...",
     langLabel: "EN",
+    feedback: {
+      rateLabel: "قيّم هذه الإجابة",
+      title: "رأيك يهمّنا",
+      q1: "الإجابة كانت واضحة وبالدارجة التونسية؟",
+      q2: "المصادر المذكورة كانت مفيدة؟",
+      yes: "نعم",
+      no: "لا",
+      commentPlaceholder: "زيد ملاحظتك هنا (اختياري)...",
+      includeQa: "نوافق على مشاركة سؤالي والإجابة باش تتحسّن الخدمة",
+      submit: "إرسال",
+      skip: "تجاهل",
+      thanks: "شكراً على تقييمك! 🙏",
+    },
   },
   en: {
     dir: "ltr",
@@ -148,5 +174,18 @@ export const t: Record<Lang, Dict> = {
     newChat: "New chat",
     thinking: "TanitBot is typing...",
     langLabel: "ع",
+    feedback: {
+      rateLabel: "Rate this answer",
+      title: "Your feedback matters",
+      q1: "Was the answer clear and easy to understand?",
+      q2: "Were the cited sources helpful?",
+      yes: "Yes",
+      no: "No",
+      commentPlaceholder: "Add a comment (optional)...",
+      includeQa: "Include my last question & answer to help improve the service",
+      submit: "Submit",
+      skip: "Skip",
+      thanks: "Thanks for your feedback! 🙏",
+    },
   },
 }
